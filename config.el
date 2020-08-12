@@ -20,7 +20,7 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 (if (eql system-type 'darwin)
-    (setq doom-font (font-spec :family "Lucida Grande Mono Nrw" :size 17 :weight 'semi-light)
+    (setq doom-font (font-spec :family "Fira Code Retina" :size 13 :weight 'semi-light)
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13))
   (setq doom-font (font-spec :family "Fira Code" :size 23 :weight 'semi-light)
         doom-variable-pitch-font (font-spec :family "sans" :size 20)))
@@ -57,9 +57,8 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-
-;; (add-hook 'doom-modeline-mode-hook #'nyan-mode)
-
+(setq doom-modeline-icon nil)
+;; (setq doom-modeline-minor-modes t)
 (setq confirm-kill-emacs nil)
 
 (map! "C-\\" #'company-complete-common-or-cycle)
