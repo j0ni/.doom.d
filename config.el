@@ -61,6 +61,8 @@
 ;; (setq doom-modeline-minor-modes t)
 (setq confirm-kill-emacs nil)
 
+(setq treemacs-no-png-images nil)
+
 (map! "C-\\" #'company-complete-common-or-cycle)
 
 (setq deft-directory (concat (getenv "HOME") "/Dropbox/OrgMode"))
