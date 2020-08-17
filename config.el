@@ -22,14 +22,19 @@
 (if (eql system-type 'darwin)
     (setq doom-font (font-spec :family "Fira Code Retina" :size 13 :weight 'semi-light)
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13))
-  (setq doom-font (font-spec :family "Fira Code" :size 23 :weight 'semi-light)
-        doom-variable-pitch-font (font-spec :family "sans" :size 20)))
+  (setq doom-font (font-spec :family "Fira Code" :size 13 :weight 'semi-light)
+        doom-variable-pitch-font (font-spec :family "sans" :size 13)))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (load! "draculapro-theme.el")
+;(setq doom-theme 'doom-wilmersdorf)
 (setq doom-theme 'doom-sourcerer)
+(setq doom-theme 'doom-outrun-electric)
+;(setq doom-theme 'doom-rouge)
+;(setq doom-theme 'doom-dracula)
+;(setq doom-theme 'dracula)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -62,6 +67,18 @@
 (setq confirm-kill-emacs nil)
 
 (setq treemacs-no-png-images nil)
+(setq treemacs-is-never-other-window t)
+
+(setq doom-scratch-initial-major-mode 'lisp-interaction-mode)
+(setq company-idle-delay nil)
+
+(setq lsp-ui-sideline-enable nil)
+(setq lsp-enable-symbol-highlighting nil)
+
+(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+
+;; (after! treemacs
+;;   (delq! 'treemacs-mode aw-ignored-buffers))
 
 (map! "C-\\" #'company-complete-common-or-cycle)
 
@@ -74,8 +91,6 @@
 
 (setq +format-on-save-enabled-modes '(python-mode))
 
-(setq ivy-extra-directories '("../"))
-
 (defvar my-lisp-modes
   '(emacs-lisp-mode clojure-mode scheme-mode geiser-mode racket-mode lisp-mode))
 
@@ -85,3 +100,8 @@
 
 (add-hooks my-lisp-modes #'paredit-mode)
 (add-hooks my-lisp-modes #'evil-paredit-mode)
+
+(after! ivy
+  (setq ivy-extra-directories '("../"))
+  ;; I prefer search matching to be ordered; it's more precise
+  (add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus)))
