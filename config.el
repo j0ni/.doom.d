@@ -21,7 +21,8 @@
 ;; font string. You generally only need these two:
 (if (eql system-type 'darwin)
     (setq doom-font (font-spec :family "Fira Code Retina" :size 13 :weight 'semi-light)
-          doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13))
+          doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
+          ns-right-option-modifier 'meta)
   (setq doom-font (font-spec :family "Fira Code" :size 13 :weight 'semi-light)
         doom-variable-pitch-font (font-spec :family "sans" :size 13)))
 
@@ -29,12 +30,12 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (load! "draculapro-theme.el")
-;(setq doom-theme 'doom-wilmersdorf)
+;;(setq doom-theme 'doom-wilmersdorf)
 (setq doom-theme 'doom-sourcerer)
-(setq doom-theme 'doom-outrun-electric)
-;(setq doom-theme 'doom-rouge)
-;(setq doom-theme 'doom-dracula)
-;(setq doom-theme 'dracula)
+;;(setq doom-theme 'doom-outrun-electric)
+;;(setq doom-theme 'doom-rouge)
+(setq doom-theme 'doom-dracula)
+(setq doom-theme 'draculapro)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!

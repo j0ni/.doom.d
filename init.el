@@ -19,7 +19,7 @@
        ;;japanese
 
        :completion
-       (company +tng)      ; the ultimate code completion backend
+       company             ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        (ivy +prescient)    ; a search engine for love and life
@@ -143,7 +143,7 @@
        ocaml             ; an objective camel
        org               ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
-       ;;plantuml          ; diagrams for confusing people more
+       plantuml          ; diagrams for confusing people more
        purescript        ; javascript, but functional
        (python +lsp +conda)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
