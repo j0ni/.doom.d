@@ -109,6 +109,7 @@
 
 ;; (after! treemacs
 ;;   (delq! 'treemacs-mode aw-ignored-buffers))
+(fringe-mode nil)
 
 (map! "C-\\" #'company-complete-common-or-cycle)
 
