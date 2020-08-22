@@ -79,7 +79,33 @@
 (setq lsp-ui-sideline-enable nil)
 (setq lsp-enable-symbol-highlighting nil)
 
+;; whitespace
+(setq whitespace-line-column 100)
+(setq whitespace-style '(face trailing lines-tail tabs))
+(add-hook 'prog-mode-hook #'whitespace-mode)
+
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+
+(setq indent-guide-char "|")
+(setq indent-guide-recursive nil)
+
+;; I mean, _seriously_...
+(setq sentence-end-double-space nil)
+
+(progn
+  (setq display-time-format nil)
+  (setq display-time-24hr-format t)
+  (setq display-time-day-and-date t)
+  (setq display-time-interval 30)
+  (setq display-time-default-load-average nil)
+  (setq zoneinfo-style-world-list
+        '(("America/Los_Angeles" "San Francisco")
+          ("America/New_York" "Toronto")
+          ("Europe/London" "London")
+          ("Europe/Berlin" "Berlin")
+          ("Asia/Hong_Kong" "Hong Kong")
+          ("Asia/Tokyo" "Tokyo")))
+  (display-time-mode))
 
 ;; (after! treemacs
 ;;   (delq! 'treemacs-mode aw-ignored-buffers))
@@ -104,6 +130,7 @@
 
 (add-hooks my-lisp-modes #'paredit-mode)
 (add-hooks my-lisp-modes #'evil-paredit-mode)
+(add-hooks my-lisp-modes #'indent-guide-mode)
 
 (after! ivy
   ;; (setq ivy-extra-directories '("../" "./"))

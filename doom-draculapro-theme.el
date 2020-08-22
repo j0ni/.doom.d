@@ -111,11 +111,11 @@ determine the exact padding."
 
    (modeline-bg
     (if -modeline-bright
-        (doom-darken  purple 0.675)
+        (doom-darken  purple 0.8)
       `(,(car bg) ,@(cdr bg-alt))))
    (modeline-bg-l
     (if -modeline-bright
-        (doom-darken purple 0.6)
+        (doom-darken purple 0.7)
       `(,(doom-darken (car bg) 0.15) ,@(cdr bg-alt))))
    (modeline-bg-inactive   (doom-darken bg 0.1))
    (modeline-bg-inactive-l `(,(doom-darken (car bg) 0.075) ,@(cdr bg))))
@@ -127,11 +127,11 @@ determine the exact padding."
    (default-italic :slant 'italic)
    (ffap :foreground fg)
    (fringe :background bg :foreground fg)
-   (highlight :foreground fg :background bg)
-   (hl-line :background current :extend t)
+   (highlight :background current :extend t)
+   (hl-line :background (doom-darken current 0.4) :extend t)
    (info-quoted-name :foreground orange)
    (info-string :foreground yellow)
-   (lazy-highlight :foreground fg :background bg-alt)
+   (lazy-highlight :background purple)
    (link :foreground cyan :underline t)
    (linum :slant 'italic :foreground comment :background bg)
    (line-number :slant 'italic :foreground comment :background bg)
@@ -140,7 +140,7 @@ determine the exact padding."
    (minibuffer-prompt :weight 'bold :foreground pink)
    (read-multiple-choice-face :inherit 'completions-first-difference)
    (region :inherit 'match :extend t)
-   (trailing-whitespace :background orange)
+   (trailing-whitespace :background orange :foreground orange)
    (vertical-border :foreground (doom-darken fg 0.4))
    (success :foreground green)
    (warning :foreground orange)
@@ -355,13 +355,13 @@ determine the exact padding."
    (ido-indicator :foreground fg :background pink)
 
    ;; ivy
-   (ivy-current-match :background comment :extend t)
+   (ivy-current-match :background (doom-darken current 0.4) :extend t)
    (ivy-subdir :inherit 'ido-subdir)
    (ivy-virtual :inherit 'ido-virtual)
    ;;
    ;; isearch
-   (isearch :inherit 'match :weight 'bold)
-   (isearch-fail :foreground bg :background orange)
+   (isearch :background pink :weight 'bold)
+   (isearch-fail :foreground bg :background red)
 
    ;; nav-flash
    (nav-flash-face :background comment :extend t)
@@ -579,6 +579,8 @@ determine the exact padding."
    (whitespace-space-before-tab :background orange :foreground red)
    (whitespace-tab :background bg-alt :foreground comment)
    (whitespace-trailing :inherit 'trailing-whitespace)
+
+   (indent-guide-face :background nil :foreground (doom-darken comment 0.5))
 
    (elscreen-tab-other-screen-face :background "#353a42" :foreground "#1e2022")
 
