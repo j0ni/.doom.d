@@ -95,7 +95,7 @@
 (progn
   (setq display-time-format nil)
   (setq display-time-24hr-format t)
-  (setq display-time-day-and-date t)
+  (setq display-time-day-and-date nil)
   (setq display-time-interval 30)
   (setq display-time-default-load-average nil)
   (setq zoneinfo-style-world-list

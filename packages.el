@@ -9,6 +9,7 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
+(package! solaire-mode :disable t)
 (package! dracula-theme)
 (package! paredit)
 (package! evil-paredit)

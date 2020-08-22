@@ -111,11 +111,11 @@ determine the exact padding."
 
    (modeline-bg
     (if -modeline-bright
-        (doom-darken  purple 0.8)
+        (doom-darken  purple 0.7)
       `(,(car bg) ,@(cdr bg-alt))))
    (modeline-bg-l
     (if -modeline-bright
-        (doom-darken purple 0.7)
+        (doom-darken purple 0.6)
       `(,(doom-darken (car bg) 0.15) ,@(cdr bg-alt))))
    (modeline-bg-inactive   (doom-darken bg 0.1))
    (modeline-bg-inactive-l `(,(doom-darken (car bg) 0.075) ,@(cdr bg))))
@@ -127,7 +127,7 @@ determine the exact padding."
    (default-italic :slant 'italic)
    (ffap :foreground fg)
    (fringe :background bg :foreground fg)
-   (highlight :background current :extend t)
+   (highlight :background current)
    (hl-line :background (doom-darken current 0.4) :extend t)
    (info-quoted-name :foreground orange)
    (info-string :foreground yellow)
