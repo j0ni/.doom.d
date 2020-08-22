@@ -30,12 +30,15 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (load! "draculapro-theme.el")
+(load! "doom-draculapro-theme.el")
 ;;(setq doom-theme 'doom-wilmersdorf)
-(setq doom-theme 'doom-sourcerer)
+;;(setq doom-theme 'doom-sourcerer)
 ;;(setq doom-theme 'doom-outrun-electric)
 ;;(setq doom-theme 'doom-rouge)
-(setq doom-theme 'doom-dracula)
-(setq doom-theme 'draculapro)
+(setq doom-draculapro-brighter-modeline t)
+(setq doom-theme 'doom-draculapro)
+;;(setq doom-theme 'draculapro)
+
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -103,6 +106,6 @@
 (add-hooks my-lisp-modes #'evil-paredit-mode)
 
 (after! ivy
-  (setq ivy-extra-directories '("../"))
+  ;; (setq ivy-extra-directories '("../" "./"))
   ;; I prefer search matching to be ordered; it's more precise
   (add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus)))
