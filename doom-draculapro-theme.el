@@ -399,10 +399,10 @@ determine the exact padding."
    (magit-diff-revision-summary-highlight :foreground orange :background bg :weight 'bold :extend t)
    ;; the four following lines are just a patch of the
    ;; upstream color to add the extend keyword.
-   (magit-diff-added :background "#335533" :foreground "#ddffdd" :extend t)
-   (magit-diff-added-highlight :background "#336633" :foreground "#cceecc" :extend t)
-   (magit-diff-removed :background "#553333" :foreground "#ffdddd" :extend t)
-   (magit-diff-removed-highlight :background "#663333" :foreground "#eecccc" :extend t)
+   (magit-diff-added :background (doom-darken green 0.8) :foreground green  :extend t)
+   (magit-diff-added-highlight :background (doom-darken green 0.6) :foreground (doom-lighten green 0.2) :extend t)
+   (magit-diff-removed :background (doom-darken red 0.8) :foreground (doom-darken pink 0.2) :extend t)
+   (magit-diff-removed-highlight :background (doom-darken red 0.6) :foreground pink :extend t)
 
    (magit-diff-file-heading :foreground fg)
    (magit-diff-file-heading-highlight :inherit 'magit-section-highlight)
