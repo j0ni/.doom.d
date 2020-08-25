@@ -39,7 +39,6 @@
 (setq doom-theme 'doom-draculapro)
 ;;(setq doom-theme 'draculapro)
 
-
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/OrgMode")
@@ -67,6 +66,8 @@
 ;; they are implemented.
 
 (setq doom-modeline-icon nil)
+(setq doom-modeline-buffer-file-name-style 'truncate-with-project)
+
 ;; (setq doom-modeline-minor-modes t)
 (setq confirm-kill-emacs nil)
 
