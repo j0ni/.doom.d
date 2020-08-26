@@ -22,22 +22,32 @@
 (if (eql system-type 'darwin)
     (setq doom-font (font-spec :family "Fira Code Retina" :size 13 :weight 'semi-light)
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
-          ns-right-option-modifier 'meta)
+          ns-right-option-modifier 'meta
+          mac-command-modifier 'meta)
   (setq doom-font (font-spec :family "Fira Code" :size 13 :weight 'semi-light)
         doom-variable-pitch-font (font-spec :family "sans" :size 13)))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(load! "draculapro-theme.el")
-(load! "doom-draculapro-theme.el")
+;;(load! "draculapro-theme.el")
+;;(load! "doom-draculapro-theme.el")
 ;;(setq doom-theme 'doom-wilmersdorf)
 ;;(setq doom-theme 'doom-sourcerer)
-;;(setq doom-theme 'doom-outrun-electric)
+(setq doom-theme 'doom-outrun-electric)
 ;;(setq doom-theme 'doom-rouge)
-(setq doom-draculapro-brighter-modeline t)
-(setq doom-theme 'doom-draculapro)
+;;(setq doom-draculapro-brighter-modeline t)
+;;(setq doom-theme 'doom-draculapro)
 ;;(setq doom-theme 'draculapro)
+;;(setq doom-theme nil)
+(setq doom-theme 'dracula)
+
+(custom-theme-set-faces! 'dracula
+  '(mode-line :background "#373844" :foreground "#f8f8f2")
+  '(mode-line-inactive :background "#282a36" :foreground "#ccccc7"))
+
+;; (after! doom-modeline
+;;   (nyan-mode 1))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -135,6 +145,5 @@
 (add-hooks my-lisp-modes #'indent-guide-mode)
 
 (after! ivy
-  ;; (setq ivy-extra-directories '("../" "./"))
   ;; I prefer search matching to be ordered; it's more precise
   (add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus)))
