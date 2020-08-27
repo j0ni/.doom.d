@@ -147,3 +147,60 @@
 (after! ivy
   ;; I prefer search matching to be ordered; it's more precise
   (add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus)))
+
+;; Some org-mode setup
+(after! org
+  ;; Set agenda file(s)
+  (setq org-agenda-files (list (concat org-directory "/journal.org")
+                               (concat org-directory "/berlin.org")
+                               (concat org-directory "/shrieks.org")))
+
+  (setq org-agenda-span 14)
+  ;; (setq org-agenda-start-on-weekday nil)
+
+  ;; prevent org-mode hijacking arrow keys
+  ;;(setq org-replace-disputed-keys t)
+
+  ;; set our own todo keywords
+  (setq org-todo-keywords
+        '((sequence "TODO" "WAITING" "QUEUED" "PAUSED" "|" "DONE" "ABANDONED")))
+
+  ;; switch quickly
+  (setq org-use-fast-todo-selection t)
+  (setq org-priority-default ?C)
+
+  ;; extra indentation
+  (setq org-adapt-indentation t)
+
+  ;; Use cider as the clojure execution backend
+  ;; (setq org-babel-clojure-backend 'cider)
+
+  ;; Let's have pretty source code blocks
+  (setq org-edit-src-content-indentation 0
+        org-src-tab-acts-natively t
+        org-src-fontify-natively t
+        org-confirm-babel-evaluate nil)
+
+  ;; org-capture
+  (require 'org-datetree)
+
+  (setq org-default-notes-file (concat org-directory "/berlin.org"))
+  (setq org-capture-templates
+        `(("j" "Journal" entry (file+olp+datetree ,(concat org-directory "/journal.org"))
+           "* %T\n  %?\n\n%a")
+          ("s" "Shriek" entry (file+headline ,(concat org-directory "/shrieks.org") "Shrieks")
+           "* %T\n%?\n")
+          ("t" "Task" entry (file+headline ,(concat org-directory "/berlin.org") "Inbox")
+           "* TODO %?\n  %a\n%i")))
+
+  (add-hook 'org-mode-hook 'auto-fill-mode)
+  (add-hook 'org-capture-mode-hook 'auto-fill-mode)
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (add-hook
+               'before-save-hook 'org-update-all-dblocks nil 'local-only)))
+
+  (org-clock-persistence-insinuate)
+
+  (dolist (tag '(home xapix sanity rachel lauren alice grace family self))'
+    (add-to-list 'org-tag-persistent-alist tag)))
