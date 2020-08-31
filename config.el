@@ -20,7 +20,7 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 (if (eql system-type 'darwin)
-    (setq doom-font (font-spec :family "Fira Code Retina" :size 13 :weight 'semi-light)
+    (setq doom-font (font-spec :family "Monoid" :size 12 :style 'retina :weight 'semi-light)
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
@@ -204,3 +204,199 @@
 
   (dolist (tag '(home xapix sanity rachel lauren alice grace family self))'
     (add-to-list 'org-tag-persistent-alist tag)))
+
+(when IS-MAC
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e"))
+
+(after! mu4e
+  ;; use it everywhere to send mail
+  (setq mail-user-agent 'mu4e-user-agent)
+
+  ;; universal
+  (setq mu4e-root-maildir "~/Maildir")
+
+  ;; See http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html
+  ;; for the templates - doco copied into comments below:
+
+  ;; Using mu4e with multiple email accounts is fairly easy. Although
+  ;; variables such as user-mail-address, mu4e-sent-folder, message-*,
+  ;; smtpmail-*, etc. typically only take one value, it is easy to
+  ;; change their values using mu4e-compose-pre-hook. The setup
+  ;; described here is one way of doing this (though certainly not the
+  ;; only way).
+
+  ;; This setup assumes that you have multiple mail accounts under
+  ;; mu4e-maildir. As an example, we’ll use ~/Maildir/Account1 and
+  ;; ~/Maildir/Account2, but the setup works just as well if
+  ;; mu4e-maildir points to something else.
+
+  ;; First, you need to make sure that all variables that you wish to
+  ;; change based on user account are set to some initial value. So set
+  ;; up your environment with e.g., your main account:
+
+  ;; (setq mu4e-sent-folder "/Account1/Saved Items"
+  ;;       mu4e-drafts-folder "/Account1/Drafts"
+  ;;       user-mail-address "my.address@account1.tld"
+  ;;       smtpmail-default-smtp-server "smtp.account1.tld"
+  ;;       smtpmail-local-domain "account1.tld"
+  ;;       smtpmail-smtp-server "smtp.account1.tld"
+  ;;       smtpmail-stream-type starttls
+  ;;       smtpmail-smtp-service 25)
+
+  ;; default
+  (setq mu4e-decryption-policy t
+        mu4e-update-interval 300
+        mu4e-hide-index-messages t
+        mu4e-confirm-quit nil
+        mu4e-use-fancy-chars nil ;; they actually look shit
+        ;; mu4e-html2text-command "pandoc -f html -t plain"
+        ;; mu4e-html2text-command "w3m -dump -T text/html"
+        ;; mu4e-html2text-command "links -force-html -dump"
+        ;; mu4e-html2text-command "html2text -utf8 -width 72"
+        ;; mu4e-html2text-command 'mu4e-shr2text
+        ;; shr-color-visible-luminance-min 70
+        mu4e-headers-sort-direction 'ascending
+        mu4e-headers-skip-duplicates t
+        mu4e-change-filenames-when-moving t
+        mu4e-headers-hide-predicate nil
+        mu4e-headers-include-related nil
+        mu4e-split-view 'single-window
+        mu4e-headers-fields '((:human-date . 12)
+                              (:flags . 6)
+                              (:mailing-list . 16)
+                              (:from . 25)
+                              (:thread-subject))
+        mu4e-compose-complete-only-after "2012-01-01"
+        mu4e-view-show-addresses t
+        mu4e-date-format-long "%FT%T%z"
+        mu4e-headers-date-format "%F"
+        mu4e-headers-time-format "%T"
+        mu4e-headers-long-date-format "%FT%T%z"
+        ;; mu4e-view-use-gnus nil
+        mm-inline-large-images 'resize)
+
+  ;; (setq mu4e-html2text-command 'mu4e-shr2text)
+
+  ;; something about ourselves
+  (setq mu4e-personal-addresses '("j@lollyshouse.ca"
+                                  "jonathan.irving@gmail.com"
+                                  "jon@xapix.io"
+                                  "j0ni@fastmail.com"
+                                  "j0ni@protonmail.com"
+                                  "jon@arity.ca")
+        mu4e-compose-signature "Jonathan Irving\nhttps://j0ni.ca\nhttps://keybase.io/j0ni")
+
+  (setq mu4e-bookmarks
+        '(("date:7d..now AND (maildir:/Fastmail/INBOX OR maildir:/Fastmail/sent-mail) AND NOT flag:trashed"
+           "Last 7 days (Fastmail)"
+           ?f)
+
+          ("date:30d..now AND (maildir:/Fastmail/INBOX OR maildir:/Fastmail/sent-mail) AND NOT flag:trashed"
+           "Last 30 days (Fastmail)"
+           ?m)
+
+          ("date:185d..now AND (maildir:/Fastmail/INBOX OR maildir:/Fastmail/sent-mail) AND NOT flag:trashed"
+           "Last 6 months"
+           ?h)
+
+          ("date:1y..now AND (maildir:/Fastmail/INBOX OR maildir:/Fastmail/sent-mail) AND NOT flag:trashed"
+           "Last year"
+           ?y)
+
+          ("date:24h..now" "Last day's messages (with trash)" ?T)
+          ("date:7d..now" "Last 7 days (with trash)" ?W)
+
+
+          ))
+
+  (setq message-send-mail-function 'message-send-mail-with-sendmail
+        sendmail-program "/usr/local/bin/msmtp"
+        ;; message-sendmail-extra-arguments (list "-a" "fastmail")
+        message-sendmail-envelope-from 'header)
+
+  ;; Borrowed and tweaked from http://zmalltalker.com/linux/mu.html:
+
+  ;; Borrowed from http://ionrock.org/emacs-email-and-mu.html
+  ;; Choose account label to feed msmtp -a option based on From header
+  ;; in Message buffer; This function must be added to
+  ;; message-send-mail-hook for on-the-fly change of From address before
+  ;; sending message since message-send-mail-hook is processed right
+  ;; before sending message.
+
+  ;; account management
+
+  (set-email-account! "Fastmail"
+                      '((mu4e-sent-messages-behavior . sent)
+                        (mu4e-sent-folder . "/Fastmail/sent-mail")
+                        (mu4e-trash-folder . "/Fastmail/trash")
+                        (mu4e-drafts-folder . "/Fastmail/drafts")
+                        (mu4e-refile-folder . "/Fastmail/all-mail")
+                        (mu4e-maildir-shortcuts . (("/Fastmail/INBOX"     . ?i)
+                                                   ("/Fastmail/sent-mail" . ?s)
+                                                   ("/Fastmail/drafts"    . ?d)
+                                                   ("/Fastmail/trash"     . ?t)))
+                        ;; ("Motiva"
+                        ;;  (mu4e-sent-folder "/Motiva/sent-mail")
+                        ;;  (mu4e-drafts-folder "/Motiva/drafts")
+                        ;;  (mu4e-maildir-shortcuts (("/Motiva/INBOX"     . ?i)
+                        ;;                           ("/Motiva/all-mail"  . ?a)
+                        ;;                           ("/Motiva/sent-mail" . ?s)
+                        ;;                           ("/Motiva/drafts"    . ?d)
+                        ;;                           ("/Motiva/trash"     . ?t)))
+                        ;;  (user-mail-address "jon@motiva.ai")
+                        ;;  (mu4e-compose-signature "Jonathan Irving\nhttp://motiva.ai\nhttps://j0ni.ca"))
+                        )
+                      t)
+
+  ;; end of account management stuff
+
+  ;; From http://zmalltalker.com/linux/mu.html again:
+
+  ;; Wouldn't it be awesome to be able to send files from dired using your mail
+  ;; client?
+
+  ;; I'll need a special version of the gnus-dired-mail-buffers function so it
+  ;; understands mu4e buffers as well:
+
+  ;; (require 'gnus-dired)
+
+  ;; make the `gnus-dired-mail-buffers' function also work on
+  ;; message-mode derived modes, such as mu4e-compose-mode
+
+  ;; (defun gnus-dired-mail-buffers ()
+  ;;   "Return a list of active message buffers."
+  ;;   (let (buffers)
+  ;;     (save-current-buffer
+  ;;       (dolist (buffer (buffer-list t))
+  ;;         (set-buffer buffer)
+  ;;         (when (and (derived-mode-p 'message-mode)
+  ;;                    (null message-sent-message-via))
+  ;;           (push (buffer-name buffer) buffers))))
+  ;;     (nreverse buffers)))
+
+  ;; (setq gnus-dired-mail-mode 'mu4e-user-agent)
+  ;; (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+
+  ;; With this, I can attach a file as an attachment to a new email
+  ;; message by entering C-c RET C-a, and I'm good to go.
+
+  ;; don't keep message buffers around
+  (setq message-kill-buffer-on-exit t)
+
+  ;; Set up compose mode
+
+  (add-hook 'mu4e-compose-mode-hook #'turn-on-auto-fill)
+  (add-hook 'message-mode-hook #'turn-on-auto-fill)
+
+  ;; Citation
+  ;; (setq message-indentation-spaces 3)
+  (setq message-citation-line-function 'message-insert-formatted-citation-line)
+  (setq message-citation-line-format "  On %e %B %Y %R %Z, %f wrote:\n")
+  (setq message-yank-prefix "  > ")
+  (setq message-yank-cited-prefix "  > ")
+  (setq message-yank-empty-prefix "  > ")
+
+  ;; Eliding
+  (setq message-elide-ellipsis "[... elided ...]")
+
+  )
