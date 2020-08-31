@@ -24,7 +24,7 @@
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
-  (setq doom-font (font-spec :family "Fira Code" :size 21 :weight 'semi-light)
+  (setq doom-font (font-spec :family "Fira Code" :size 19 :weight 'semi-light)
         doom-variable-pitch-font (font-spec :family "sans" :size 21)))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
