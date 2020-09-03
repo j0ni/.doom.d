@@ -228,8 +228,9 @@
   (dolist (tag '(home xapix sanity rachel lauren alice grace family self))'
     (add-to-list 'org-tag-persistent-alist tag)))
 
-(when IS-MAC
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e"))
+(if IS-MAC
+    (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
+  (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e"))
 
 (after! mu4e
   ;; use it everywhere to send mail
