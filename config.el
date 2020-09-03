@@ -20,7 +20,7 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 (if (eql system-type 'darwin)
-    (setq doom-font (font-spec :family "Monoid" :size 12 :style 'retina :weight 'semi-light)
+    (setq doom-font (font-spec :family "Lucida Console Patched" :size 15 :weight 'semi-light)
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
@@ -34,13 +34,34 @@
 ;;(load! "doom-draculapro-theme.el")
 ;;(setq doom-theme 'doom-wilmersdorf)
 ;;(setq doom-theme 'doom-sourcerer)
-(setq doom-theme 'doom-outrun-electric)
+;;(setq doom-theme 'doom-outrun-electric)
 ;;(setq doom-theme 'doom-rouge)
 ;;(setq doom-draculapro-brighter-modeline t)
 ;;(setq doom-theme 'doom-draculapro)
 ;;(setq doom-theme 'draculapro)
 ;;(setq doom-theme nil)
-(setq doom-theme 'dracula)
+;;(setq doom-theme 'dracula)
+(setq doom-theme 'modus-operandi)
+;;(setq doom-theme 'tango-plus)
+(setq modus-operandi-theme-bold-constructs t)
+(setq modus-operandi-theme-mode-line nil)
+(setq modus-operandi-theme-faint-syntax t)
+(setq modus-operandi-theme-fringes nil)
+(setq modus-operandi-theme-rainbow-headings t)
+(setq modus-operandi-theme-section-headings nil)
+(setq modus-operandi-theme-scale-headings t)
+
+(setq modus-vivendi-theme-bold-constructs nil)
+(setq modus-vivendi-theme-mode-line nil)
+(setq modus-vivendi-theme-faint-syntax nil)
+(setq modus-vivendi-theme-fringes nil)
+(setq modus-vivendi-theme-rainbow-headings t)
+(setq modus-vivendi-theme-section-headings nil)
+(setq modus-vivendi-theme-scale-headings t)
+
+(custom-theme-set-faces! 'modus-operandi
+  '(bold :weight semibold)
+  '(indent-guide-face :foreground "#c0c0c0"))
 
 (custom-theme-set-faces! 'dracula
   '(mode-line :background "#373844" :foreground "#f8f8f2")
@@ -57,6 +78,8 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type nil)
 
+;; Flycheck is mostly annoying, but only intolerable in Clojure.
+(setq-default flycheck-disabled-checkers '(clojure))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -246,6 +269,8 @@
   ;; default
   (setq mu4e-decryption-policy t
         mu4e-update-interval 300
+        mu4e-index-update-in-background nil
+        mu4e-get-mail-command "true"
         mu4e-hide-index-messages t
         mu4e-confirm-quit nil
         mu4e-use-fancy-chars nil ;; they actually look shit
@@ -284,7 +309,7 @@
                                   "j0ni@fastmail.com"
                                   "j0ni@protonmail.com"
                                   "jon@arity.ca")
-        mu4e-compose-signature "Jonathan Irving\nhttps://j0ni.ca\nhttps://keybase.io/j0ni")
+        )
 
   (setq mu4e-bookmarks
         '(("date:7d..now AND (maildir:/Fastmail/INBOX OR maildir:/Fastmail/sent-mail) AND NOT flag:trashed"
@@ -311,42 +336,24 @@
 
   (setq message-send-mail-function 'message-send-mail-with-sendmail
         sendmail-program "/usr/local/bin/msmtp"
-        ;; message-sendmail-extra-arguments (list "-a" "fastmail")
         message-sendmail-envelope-from 'header)
-
-  ;; Borrowed and tweaked from http://zmalltalker.com/linux/mu.html:
-
-  ;; Borrowed from http://ionrock.org/emacs-email-and-mu.html
-  ;; Choose account label to feed msmtp -a option based on From header
-  ;; in Message buffer; This function must be added to
-  ;; message-send-mail-hook for on-the-fly change of From address before
-  ;; sending message since message-send-mail-hook is processed right
-  ;; before sending message.
 
   ;; account management
 
-  (set-email-account! "Fastmail"
-                      '((mu4e-sent-messages-behavior . sent)
-                        (mu4e-sent-folder . "/Fastmail/sent-mail")
-                        (mu4e-trash-folder . "/Fastmail/trash")
-                        (mu4e-drafts-folder . "/Fastmail/drafts")
-                        (mu4e-refile-folder . "/Fastmail/all-mail")
-                        (mu4e-maildir-shortcuts . (("/Fastmail/INBOX"     . ?i)
-                                                   ("/Fastmail/sent-mail" . ?s)
-                                                   ("/Fastmail/drafts"    . ?d)
-                                                   ("/Fastmail/trash"     . ?t)))
-                        ;; ("Motiva"
-                        ;;  (mu4e-sent-folder "/Motiva/sent-mail")
-                        ;;  (mu4e-drafts-folder "/Motiva/drafts")
-                        ;;  (mu4e-maildir-shortcuts (("/Motiva/INBOX"     . ?i)
-                        ;;                           ("/Motiva/all-mail"  . ?a)
-                        ;;                           ("/Motiva/sent-mail" . ?s)
-                        ;;                           ("/Motiva/drafts"    . ?d)
-                        ;;                           ("/Motiva/trash"     . ?t)))
-                        ;;  (user-mail-address "jon@motiva.ai")
-                        ;;  (mu4e-compose-signature "Jonathan Irving\nhttp://motiva.ai\nhttps://j0ni.ca"))
-                        )
-                      t)
+  (set-email-account!
+   "Fastmail"
+   '((mu4e-sent-messages-behavior . sent)
+     (message-sendmail-extra-arguments . ("-a" "fastmail"))
+     (mu4e-sent-folder . "/Fastmail/sent-mail")
+     (mu4e-trash-folder . "/Fastmail/trash")
+     (mu4e-drafts-folder . "/Fastmail/drafts")
+     (mu4e-refile-folder . "/Fastmail/all-mail")
+     (mu4e-maildir-shortcuts . (("/Fastmail/INBOX"     . ?i)
+                                ("/Fastmail/sent-mail" . ?s)
+                                ("/Fastmail/drafts"    . ?d)
+                                ("/Fastmail/trash"     . ?t)))
+     (mu4e-compose-signature . "Jonathan Irving\nhttps://j0ni.ca\nhttps://keybase.io/j0ni"))
+   t)
 
   ;; end of account management stuff
 

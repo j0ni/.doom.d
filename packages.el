@@ -15,6 +15,11 @@
 (package! evil-paredit)
 (package! indent-guide)
 (package! nyan-mode)
+(package! modus-operandi-theme)
+(package! modus-vivendi-theme)
+;;(package! leuven-theme)
+(package! minimal-theme)
+(package! tango-plus-theme)
 ;;(package! smart-mode-line)
 
 ;; To install a package directly from a remote git repo, you must specify a
