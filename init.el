@@ -93,7 +93,6 @@
        gist                ; interacting with github gists
        (lookup +docsets +dictionary) ; navigate your code and its documentation
        lsp
-       ;;macos               ; MacOS-specific commands
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -107,7 +106,7 @@
 
        :os
        (:if IS-MAC macos)
-       ;;arch
+       (:if IS-LINUX arch)
        ;;nixos
        ;;tty
 

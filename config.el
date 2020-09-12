@@ -30,34 +30,32 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-;;(load! "draculapro-theme.el")
-;;(load! "doom-draculapro-theme.el")
+(load! "draculapro-theme.el")
+(load! "./doom-draculapro-theme.el")
 ;;(setq doom-theme 'doom-wilmersdorf)
 ;;(setq doom-theme 'doom-sourcerer)
 ;;(setq doom-theme 'doom-outrun-electric)
 ;;(setq doom-theme 'doom-rouge)
 ;;(setq doom-draculapro-brighter-modeline t)
 ;;(setq doom-theme 'doom-draculapro)
-;;(setq doom-theme 'draculapro)
 ;;(setq doom-theme nil)
 ;;(setq doom-theme 'dracula)
-
-(setq doom-theme 'modus-operandi)
+;;(setq doom-theme 'modus-operandi)
 (setq modus-operandi-theme-bold-constructs t)
 (setq modus-operandi-theme-mode-line nil)
 (setq modus-operandi-theme-faint-syntax t)
 (setq modus-operandi-theme-fringes nil)
 (setq modus-operandi-theme-scale-headings t)
-(setq fancy-splash-image
-      "~/Dropbox/Home/Pictures/Death_Star/000000-death-star-png/000000-death-star-512.png")
+
 
 ;;(setq doom-theme 'modus-vivendi)
 (setq modus-vivendi-theme-bold-constructs nil)
 (setq modus-vivendi-theme-mode-line nil)
+;; (setq modus-vivendi-theme-bold-constructs t)
+;; (setq modus-vivendi-theme-mode-line 'moody)
 (setq modus-vivendi-theme-faint-syntax t)
 (setq modus-vivendi-theme-fringes nil)
 (setq modus-vivendi-theme-scale-headings t)
-;;(setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
 
 (custom-theme-set-faces! 'modus-operandi
   '(bold :weight semibold)
@@ -71,6 +69,21 @@
   '(mode-line :background "#373844" :foreground "#f8f8f2")
   '(mode-line-inactive :background "#282a36" :foreground "#ccccc7"))
 
+(custom-theme-set-faces! 'draculapro
+  '(bold :weight semibold))
+
+(cond
+ (IS-LINUX
+  (progn
+    (setq doom-theme 'modus-vivendi)
+    (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")))
+ (IS-MAC
+  (progn
+    (setq doom-theme 'modus-operandi)
+    (setq fancy-splash-image
+          "~/Dropbox/Home/Pictures/Death_Star/000000-death-star-png/000000-death-star-512.png"))))
+
+;;
 ;; (after! doom-modeline
 ;;   (nyan-mode 1))
 

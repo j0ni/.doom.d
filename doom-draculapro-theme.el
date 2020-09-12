@@ -627,7 +627,7 @@ determine the exact padding."
 
    ;; highlight-quoted-mode
    (highlight-quoted-symbol :foreground cyan)
-   (highlight-quoted-quote  :foreground purple )
+   (highlight-quoted-quote  :foreground purple)
    )
 
   ;; --- extra variables ---------------------
