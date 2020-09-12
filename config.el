@@ -20,7 +20,7 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 (if (eql system-type 'darwin)
-    (setq doom-font (font-spec :family "Lucida Console Patched" :size 15 :weight 'semi-light)
+    (setq doom-font (font-spec :family "Fira Code" :size 13 :weight 'semi-light)
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
@@ -41,29 +41,33 @@
 ;;(setq doom-theme 'draculapro)
 ;;(setq doom-theme nil)
 ;;(setq doom-theme 'dracula)
+
 (setq doom-theme 'modus-operandi)
-;;(setq doom-theme 'tango-plus)
 (setq modus-operandi-theme-bold-constructs t)
 (setq modus-operandi-theme-mode-line nil)
 (setq modus-operandi-theme-faint-syntax t)
 (setq modus-operandi-theme-fringes nil)
-(setq modus-operandi-theme-rainbow-headings t)
-(setq modus-operandi-theme-section-headings nil)
 (setq modus-operandi-theme-scale-headings t)
+(setq fancy-splash-image
+      "~/Dropbox/Home/Pictures/Death_Star/000000-death-star-png/000000-death-star-512.png")
 
+;;(setq doom-theme 'modus-vivendi)
 (setq modus-vivendi-theme-bold-constructs nil)
 (setq modus-vivendi-theme-mode-line nil)
-(setq modus-vivendi-theme-faint-syntax nil)
+(setq modus-vivendi-theme-faint-syntax t)
 (setq modus-vivendi-theme-fringes nil)
-(setq modus-vivendi-theme-rainbow-headings t)
-(setq modus-vivendi-theme-section-headings nil)
 (setq modus-vivendi-theme-scale-headings t)
+;;(setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
 
 (custom-theme-set-faces! 'modus-operandi
   '(bold :weight semibold)
   '(indent-guide-face :foreground "#c0c0c0"))
 
+(custom-theme-set-faces! 'modus-vivendi
+  '(bold :weight semibold))
+
 (custom-theme-set-faces! 'dracula
+  '(bold :weight semibold)
   '(mode-line :background "#373844" :foreground "#f8f8f2")
   '(mode-line-inactive :background "#282a36" :foreground "#ccccc7"))
 
@@ -167,9 +171,12 @@
 (add-hooks my-lisp-modes #'evil-paredit-mode)
 (add-hooks my-lisp-modes #'indent-guide-mode)
 
-(after! ivy
-  ;; I prefer search matching to be ordered; it's more precise
-  (add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus)))
+;; (after! ivy
+;;   ;; I prefer search matching to be ordered; it's more precise
+;;   (add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus)))
+
+(after! cider
+  (setq cider-prompt-for-symbol nil))
 
 ;; Some org-mode setup
 (after! org
