@@ -19,13 +19,7 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(if (eql system-type 'darwin)
-    (setq doom-font (font-spec :family "Fira Code" :size 13 :weight 'semi-light)
-          doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
-          ns-right-option-modifier 'meta
-          mac-command-modifier 'meta)
-  (setq doom-font (font-spec :family "Fira Code" :size 19 :weight 'semi-light)
-        doom-variable-pitch-font (font-spec :family "sans" :size 21)))
+
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -40,20 +34,17 @@
 ;;(setq doom-theme 'doom-draculapro)
 ;;(setq doom-theme nil)
 ;;(setq doom-theme 'dracula)
-;;(setq doom-theme 'modus-operandi)
+
 (setq modus-operandi-theme-bold-constructs t)
 (setq modus-operandi-theme-mode-line nil)
-(setq modus-operandi-theme-faint-syntax t)
+(setq modus-operandi-theme-faint-syntax nil)
 (setq modus-operandi-theme-fringes nil)
 (setq modus-operandi-theme-scale-headings t)
 
 
-;;(setq doom-theme 'modus-vivendi)
-(setq modus-vivendi-theme-bold-constructs nil)
+(setq modus-vivendi-theme-bold-constructs t)
 (setq modus-vivendi-theme-mode-line nil)
-;; (setq modus-vivendi-theme-bold-constructs t)
-;; (setq modus-vivendi-theme-mode-line 'moody)
-(setq modus-vivendi-theme-faint-syntax t)
+(setq modus-vivendi-theme-faint-syntax nil)
 (setq modus-vivendi-theme-fringes nil)
 (setq modus-vivendi-theme-scale-headings t)
 
@@ -64,28 +55,48 @@
 (custom-theme-set-faces! 'modus-vivendi
   '(bold :weight semibold))
 
+(custom-theme-set-faces! 'draculapro
+  '(bold :weight semibold)
+  '(mode-line :background "#373844" :foreground "#f8f8f2")
+  '(mode-line-inactive :background "#282a36" :foreground "#ccccc7"))
+
 (custom-theme-set-faces! 'dracula
   '(bold :weight semibold)
   '(mode-line :background "#373844" :foreground "#f8f8f2")
   '(mode-line-inactive :background "#282a36" :foreground "#ccccc7"))
 
-(custom-theme-set-faces! 'draculapro
-  '(bold :weight semibold))
+(setq-default indicate-buffer-boundaries 'left)
+(setq-default truncate-lines nil)
+(setq-default word-wrap nil)
 
 (cond
  (IS-LINUX
   (progn
+    (setq doom-font (font-spec :family "Fira Code" :size 19 :weight 'semi-light)
+          doom-variable-pitch-font (font-spec :family "sans" :size 21))
     (setq doom-theme 'modus-vivendi)
     (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")))
+
  (IS-MAC
   (progn
-    (setq doom-theme 'modus-operandi)
-    (setq fancy-splash-image
-          "~/Dropbox/Home/Pictures/Death_Star/000000-death-star-png/000000-death-star-512.png"))))
+    (setq doom-font (font-spec :family "Victor Mono" :size 13 :weight 'semi-light)
+          line-spacing 0
+          doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
+          ns-right-option-modifier 'meta
+          mac-command-modifier 'meta)
+    ;; (setq doom-theme 'modus-vivendi)
+    (setq doom-theme 'draculapro)
+    ;;(setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
+    (setq fancy-splash-image "~/Downloads/rebel.png")
+    ;; (setq fancy-splash-image
+    ;;       "~/Dropbox/Home/Pictures/Death_Star/000000-death-star-png/000000-death-star-512.png")
+    )))
 
-;;
-;; (after! doom-modeline
-;;   (nyan-mode 1))
+(defun setup-tide-mode ()
+  )
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+(add-hook 'before-save-hook #'tide-format-before-save)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -161,6 +172,7 @@
 ;; (after! treemacs
 ;;   (delq! 'treemacs-mode aw-ignored-buffers))
 (fringe-mode nil)
+(setq-default fring-mode nil)
 
 (map! "C-\\" #'company-complete-common-or-cycle)
 
@@ -171,7 +183,20 @@
         :i "RET" #'cider-repl-newline-and-indent
         :i "C-RET" #'cider-repl-return)))
 
-(setq +format-on-save-enabled-modes '(python-mode))
+(map! (:when (featurep! :lang kotlin)
+       (:map kotlin-mode-map
+        :localleader
+        :nv "z" #'kotlin-repl
+        :nv "c" #'kotlin-send-buffer
+        :nv "r" #'kotlin-send-region
+        :nv "x" #'kotlin-send-block-and-focus
+        :nv "B" #'kotlin-send-buffer-and-focus)))
+
+(map! (:leader
+       (:prefix "t"
+        :nv :desc "Toggle line truncation" "t" #'toggle-truncate-lines)))
+
+(setq +format-on-save-enabled-modes '(python-mode rustic-mode))
 
 (defvar my-lisp-modes
   '(emacs-lisp-mode clojure-mode scheme-mode geiser-mode racket-mode lisp-mode))
@@ -184,11 +209,27 @@
 (add-hooks my-lisp-modes #'evil-paredit-mode)
 (add-hooks my-lisp-modes #'indent-guide-mode)
 
-;; (after! ivy
-;;   ;; I prefer search matching to be ordered; it's more precise
-;;   (add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus)))
+;; doom already includes diff-hl, but it switches it on in the margin rather
+;; than fringe - so first switch it off
+(diff-hl-margin-mode -1)
+;; and add some hooks for it
+(add-hook 'prog-mode-hook #'turn-on-diff-hl-mode)
+(add-hook 'org-mode-hook #'turn-on-diff-hl-mode)
+(add-hook 'dired-mode-hook #'diff-hl-dired-mode)
+(add-hook 'diff-hl-mode-hook #'diff-hl-flydiff-mode)
+
+(after! (:and magit diff-hl)
+  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
+
+(after! ivy
+  ;; I prefer search matching to be ordered; it's more precise
+  ;;(add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus))
+  (setq ivy-use-virtual-buffers t)
+  )
 
 (after! cider
+  (setq cider-use-fringe-indicators nil)
   (setq cider-prompt-for-symbol nil))
 
 ;; Some org-mode setup
