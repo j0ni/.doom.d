@@ -75,8 +75,8 @@
     (setq doom-font (font-spec :family "Fira Code" :size 19 :weight 'semi-light)
           doom-variable-pitch-font (font-spec :family "sans" :size 21))
     (setq doom-theme 'modus-vivendi)
-    (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")))
-
+    ;; (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
+    (setq fancy-splash-image nil)))
  (IS-MAC
   (progn
     (setq doom-font (font-spec :family "Victor Mono" :size 13 :weight 'semi-light)
@@ -227,6 +227,11 @@
   ;;(add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus))
   (setq ivy-use-virtual-buffers t)
   )
+
+(after! fennel-mode
+  (add-hook 'fennel-mode-hook
+            (lambda ()
+              (setq inferior-lisp-program "fennel"))))
 
 (after! cider
   (setq cider-use-fringe-indicators nil)
