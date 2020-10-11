@@ -84,8 +84,8 @@
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
-    ;; (setq doom-theme 'modus-vivendi)
-    (setq doom-theme 'draculapro)
+    (setq doom-theme 'modus-vivendi)
+    ;;(setq doom-theme 'draculapro)
     ;;(setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
     (setq fancy-splash-image "~/Downloads/rebel.png")
     ;; (setq fancy-splash-image
@@ -217,6 +217,11 @@
 (add-hook 'org-mode-hook #'turn-on-diff-hl-mode)
 (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
 (add-hook 'diff-hl-mode-hook #'diff-hl-flydiff-mode)
+
+(global-auto-highlight-symbol-mode t)
+(after! auto-highlight-symbol
+  (add-to-list 'ahs-modes 'clojure-mode)
+  (add-to-list 'ahs-modes 'typescript-mode))
 
 (after! (:and magit diff-hl)
   (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
