@@ -222,11 +222,16 @@
 (add-hook 'prog-mode-hook #'turn-on-diff-hl-mode)
 (add-hook 'org-mode-hook #'turn-on-diff-hl-mode)
 (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
-(add-hook 'diff-hl-mode-hook #'diff-hl-flydiff-mode)
+;; (add-hook 'diff-hl-mode-hook #'diff-hl-flydiff-mode)
 
-(global-auto-highlight-symbol-mode t)
-(after! auto-highlight-symbol
+(when (featurep! highlight-symbol)
+  (add-hook 'prog-mode-hook #'highlight-symbol-mode)
+  (add-hook 'dired-mode-hook #'highlight-symbol-mode))
+
+(when (featurep! auto-highlight-symbol)
+  (global-auto-highlight-symbol-mode t)
   (add-to-list 'ahs-modes 'clojure-mode)
+  (add-to-list 'ahs-modes 'fennel-mode)
   (add-to-list 'ahs-modes 'typescript-mode))
 
 (after! (:and magit diff-hl)
