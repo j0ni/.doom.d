@@ -268,7 +268,7 @@
 
   ;; set our own todo keywords
   (setq org-todo-keywords
-        '((sequence "TODO" "WAITING" "QUEUED" "PAUSED" "|" "DONE" "ABANDONED")))
+        '((sequence "TODO" "WAITING" "QUEUED" "INPROGRESS" "PAUSED" "|" "DONE" "ABANDONED")))
 
   ;; switch quickly
   (setq org-use-fast-todo-selection t)

@@ -29,6 +29,7 @@
 (package! fennel-mode)
 (package! auto-highlight-symbol :disable t)
 (package! highlight-symbol)
+(package! org-msg :disable t)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
