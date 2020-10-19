@@ -9,7 +9,7 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
-;;(package! solaire-mode :disable t)
+(package! solaire-mode :disable t)
 (package! git-gutter :disable t)
 (package! git-gutter-fringe :disable t)
 (package! diff-hl)
@@ -17,19 +17,20 @@
 (package! paredit)
 (package! evil-paredit)
 (package! indent-guide)
-(package! nyan-mode)
+(package! nyan-mode :disable t)
 (package! modus-operandi-theme)
 (package! modus-vivendi-theme)
-;;(package! leuven-theme)
-(package! minimal-theme)
-(package! tango-plus-theme)
-(package! color-theme-sanityinc-tomorrow)
+(package! leuven-theme :disable t)
+(package! minimal-theme :disable t)
+(package! tango-plus-theme :disable t)
+(package! color-theme-sanityinc-tomorrow :disable t)
 ;;(package! smart-mode-line)
 (package! tide)
 (package! fennel-mode)
 (package! auto-highlight-symbol :disable t)
 (package! highlight-symbol)
 (package! org-msg :disable t)
+(package! inf-clojure :disable t)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:

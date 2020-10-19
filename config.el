@@ -25,7 +25,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (load! "draculapro-theme.el")
-(load! "./doom-draculapro-theme.el")
+(load! "doom-draculapro-theme.el")
 ;;(setq doom-theme 'doom-wilmersdorf)
 ;;(setq doom-theme 'doom-sourcerer)
 ;;(setq doom-theme 'doom-outrun-electric)
@@ -55,12 +55,7 @@
 (custom-theme-set-faces! 'modus-vivendi
   '(bold :weight semibold))
 
-(custom-theme-set-faces! 'draculapro
-  '(bold :weight semibold)
-  '(mode-line :background "#373844" :foreground "#f8f8f2")
-  '(mode-line-inactive :background "#282a36" :foreground "#ccccc7"))
-
-(custom-theme-set-faces! 'dracula
+(custom-theme-set-faces! '(dracula draculapro doom-dracula-pro)
   '(bold :weight semibold)
   '(mode-line :background "#373844" :foreground "#f8f8f2")
   '(mode-line-inactive :background "#282a36" :foreground "#ccccc7"))
@@ -68,6 +63,10 @@
 (setq-default indicate-buffer-boundaries 'left)
 (setq-default truncate-lines nil)
 (setq-default word-wrap nil)
+
+;; for some reason org-mode won't let me type a newline when this is on.
+;; https://github.com/hlissner/doom-emacs/issues/3172
+(add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 
 (cond
  (IS-LINUX
@@ -79,12 +78,13 @@
     (setq fancy-splash-image nil)))
  (IS-MAC
   (progn
-    (setq doom-font (font-spec :family "Victor Mono" :size 13 :weight 'semi-light)
+    (setq doom-font (font-spec :family "Iosevka Comfy" :size 17 :weight 'semi-light)
           line-spacing 0
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
     (setq doom-theme 'modus-vivendi)
+    ;;(setq doom-theme 'doom-draculapro)
     ;;(setq doom-theme 'draculapro)
     ;;(setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
     (setq fancy-splash-image "~/Downloads/rebel.png")
@@ -251,8 +251,14 @@
               (setq inferior-lisp-program "fennel"))))
 
 (after! cider
+  ;; (remove-hook 'clojure-mode-hook #'cider-mode)
+  ;; (remove-hook 'clojure-mode-hook #'er/add-clojure-mode-expansions)
+  ;; (remove-hook 'clojure-mode-hook #'clj-refactor-mode)
   (setq cider-use-fringe-indicators nil)
   (setq cider-prompt-for-symbol nil))
+
+(after! inf-clojure
+  (inf-clojure-update-feature 'clojure 'completion "(complete.core/completions \"%s\")"))
 
 ;; Some org-mode setup
 (after! org
