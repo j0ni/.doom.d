@@ -72,7 +72,7 @@
 (cond
  (IS-LINUX
   (progn
-    (setq doom-font (font-spec :family "Fira Code" :size 19 :weight 'semi-light)
+    (setq doom-font (font-spec :family "Iosevka Comfy" :size 19 :weight 'semi-light)
           doom-variable-pitch-font (font-spec :family "sans" :size 21))
     (setq doom-theme 'modus-vivendi)
     ;; (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
@@ -224,12 +224,14 @@
 (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
 ;; (add-hook 'diff-hl-mode-hook #'diff-hl-flydiff-mode)
 
-(when (featurep! highlight-symbol)
-  (add-hook 'prog-mode-hook #'highlight-symbol-mode)
-  (add-hook 'dired-mode-hook #'highlight-symbol-mode))
+(use-package! highlight-symbol
+  :hook ((prog-mode . highlight-symbol-mode)
+         (dired-mode . highlight-symbol-mode)))
 
-(when (featurep! auto-highlight-symbol)
+(use-package! auto-highlight-symbol
+  :init
   (global-auto-highlight-symbol-mode t)
+  :config
   (add-to-list 'ahs-modes 'clojure-mode)
   (add-to-list 'ahs-modes 'fennel-mode)
   (add-to-list 'ahs-modes 'typescript-mode))
@@ -241,8 +243,7 @@
 (after! ivy
   ;; I prefer search matching to be ordered; it's more precise
   ;;(add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus))
-  (setq ivy-use-virtual-buffers t)
-  )
+  (setq ivy-use-virtual-buffers t))
 
 (after! fennel-mode
   (add-hook 'fennel-mode-hook
@@ -387,12 +388,12 @@
 
   ;; something about ourselves
   (setq mu4e-personal-addresses '("j@lollyshouse.ca"
+                                  "hi@mhcat.ca"
                                   "jonathan.irving@gmail.com"
                                   "jon@xapix.io"
                                   "j0ni@fastmail.com"
                                   "j0ni@protonmail.com"
-                                  "jon@arity.ca")
-        )
+                                  "jon@arity.ca"))
 
   (setq mu4e-bookmarks
         '(("date:7d..now AND (maildir:/Fastmail/INBOX OR maildir:/Fastmail/sent-mail) AND NOT flag:trashed"
@@ -418,7 +419,9 @@
           ))
 
   (setq message-send-mail-function 'message-send-mail-with-sendmail
-        sendmail-program "/usr/local/bin/msmtp"
+        sendmail-program (if IS-MAC
+                             "/usr/local/bin/msmtp"
+                           "/usr/bin/msmtp")
         message-sendmail-envelope-from 'header)
 
   ;; account management
