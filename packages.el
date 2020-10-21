@@ -10,9 +10,9 @@
 ;(package! some-package)
 
 (package! solaire-mode :disable t)
-(package! git-gutter :disable t)
-(package! git-gutter-fringe :disable t)
-(package! diff-hl)
+;;(package! git-gutter :disable t)
+;;(package! git-gutter-fringe :disable t)
+;;(package! diff-hl)
 (package! dracula-theme)
 (package! paredit)
 (package! evil-paredit)
@@ -31,6 +31,9 @@
 (package! highlight-symbol)
 (package! org-msg :disable t)
 (package! inf-clojure :disable t)
+(package! olivetti)
+(package! focus)
+;; (package! doom-modeline :disable t)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:

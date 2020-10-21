@@ -132,7 +132,9 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq doom-modeline-icon nil)
+(setq doom-modeline-height 30)
+
+(setq doom-modeline-icon t)
 (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
 
 ;; (setq doom-modeline-minor-modes t)
@@ -177,12 +179,24 @@
 
 ;; (after! treemacs
 ;;   (delq! 'treemacs-mode aw-ignored-buffers))
-(fringe-mode nil)
-(setq-default fring-mode nil)
+
+(setq +vc-gutter-default-style nil)
+
+;; (fringe-mode nil)
+;; (setq-default fring-mode nil)
 
 (map! "C-\\" #'company-complete-common-or-cycle)
 
 (setq deft-directory (concat (getenv "HOME") "/Dropbox/OrgMode"))
+
+(map! (:leader
+       (:prefix "t"
+        :nv :desc "Toggle line truncation" "t" #'toggle-truncate-lines
+        :nv :desc "Toggle olivetti-mode" "o" #'olivetti-mode
+        :nv :desc "Toggle focus-mode" "d" #'focus-mode)))
+
+(after! olivetti
+  (setq olivetti-minimum-body-width 100))
 
 (map! (:when (featurep! :lang clojure)
        (:map cider-repl-mode-map
@@ -198,9 +212,7 @@
         :nv "x" #'kotlin-send-block-and-focus
         :nv "B" #'kotlin-send-buffer-and-focus)))
 
-(map! (:leader
-       (:prefix "t"
-        :nv :desc "Toggle line truncation" "t" #'toggle-truncate-lines)))
+
 
 (setq +format-on-save-enabled-modes '(python-mode rustic-mode))
 
@@ -219,9 +231,9 @@
 ;; than fringe - so first switch it off
 (diff-hl-margin-mode -1)
 ;; and add some hooks for it
-(add-hook 'prog-mode-hook #'turn-on-diff-hl-mode)
-(add-hook 'org-mode-hook #'turn-on-diff-hl-mode)
-(add-hook 'dired-mode-hook #'diff-hl-dired-mode)
+;; (add-hook 'prog-mode-hook #'turn-on-diff-hl-mode)
+;; (add-hook 'org-mode-hook #'turn-on-diff-hl-mode)
+;; (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
 ;; (add-hook 'diff-hl-mode-hook #'diff-hl-flydiff-mode)
 
 (use-package! highlight-symbol
@@ -239,6 +251,14 @@
 (after! (:and magit diff-hl)
   (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
+
+(after! flycheck
+  (setq flycheck-indication-mode 'right-fringe)
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+      [16 48 112 240 112 48 16] nil nil 'center))
+
+(after! git-gutter-fringe
+  (setq-default fringes-outside-margins t))
 
 (after! ivy
   ;; I prefer search matching to be ordered; it's more precise
