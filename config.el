@@ -78,7 +78,8 @@
     (setq fancy-splash-image nil)))
  (IS-MAC
   (progn
-    (setq doom-font (font-spec :family "Iosevka Comfy" :size 17 :weight 'semi-light)
+    (setq doom-font (font-spec :family "Iosevka Comfy" :size 17 :weight 'light)
+         ;; (font-spec :family "Iosevka Comfy" :size 17 :weight 'light)
           line-spacing 0
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
           ns-right-option-modifier 'meta
@@ -132,10 +133,16 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq doom-modeline-height 30)
+(setq doom-modeline-height 1)
 
-(setq doom-modeline-icon t)
-(setq doom-modeline-buffer-file-name-style 'truncate-with-project)
+(setq doom-modeline-icon (display-graphic-p))
+(setq doom-modeline-icon nil)
+(setq doom-modeline-buffer-file-name-style 'file-name)
+(setq doom-modeline-vcs-max-length 20)
+(setq doom-modeline-workspace-name nil)
+(setq doom-modeline-persp-name t)
+(setq doom-modeline-modal-icon nil)
+(setq doom-modeline-irc t)
 
 ;; (setq doom-modeline-minor-modes t)
 (setq confirm-kill-emacs nil)
@@ -196,7 +203,7 @@
         :nv :desc "Toggle focus-mode" "d" #'focus-mode)))
 
 (after! olivetti
-  (setq olivetti-minimum-body-width 100))
+  (setq olivetti-minimum-body-width 120))
 
 (map! (:when (featurep! :lang clojure)
        (:map cider-repl-mode-map
@@ -334,7 +341,7 @@
 
   (org-clock-persistence-insinuate)
 
-  (dolist (tag '(home xapix sanity rachel lauren alice grace family self))'
+  (dolist (tag '(home xapix sanity rachel lauren alice grace family self))
     (add-to-list 'org-tag-persistent-alist tag)))
 
 (if IS-MAC
