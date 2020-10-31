@@ -42,7 +42,7 @@
 (setq modus-operandi-theme-scale-headings t)
 
 
-(setq modus-vivendi-theme-bold-constructs t)
+(setq modus-vivendi-theme-bold-constructs nil)
 (setq modus-vivendi-theme-mode-line nil)
 (setq modus-vivendi-theme-faint-syntax nil)
 (setq modus-vivendi-theme-fringes nil)
@@ -219,7 +219,18 @@
         :nv "x" #'kotlin-send-block-and-focus
         :nv "B" #'kotlin-send-buffer-and-focus)))
 
+(after! circe
+  (set-irc-server! "freenode"
+                   `(:host "localhost"
+                     :tls nil
+                     :port 6777))
+  (set-irc-server! "oftc"
+                   `(:host "localhost"
+                     :tls nil
+                     :port 6778)))
 
+(setq ido-use-virtual-buffers t)
+(setq ido-ubiquitous-allow-on-functional-collection t)
 
 (setq +format-on-save-enabled-modes '(python-mode rustic-mode))
 
@@ -270,12 +281,16 @@
 (after! ivy
   ;; I prefer search matching to be ordered; it's more precise
   ;;(add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus))
+  (setq ivy-extra-directories nil)
   (setq ivy-use-virtual-buffers t))
 
-(after! fennel-mode
-  (add-hook 'fennel-mode-hook
-            (lambda ()
-              (setq inferior-lisp-program "fennel"))))
+(add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode))
+;; (after! fennel-mode
+;;   (add-hook 'fennel-mode-hook
+;;             (lambda ()
+;;               (setq-local inferior-lisp-program
+;;                           (if IS-MAC "/usr/local/bin/fennel --repl"
+;;                             "fennel --repl")))))
 
 (after! cider
   ;; (remove-hook 'clojure-mode-hook #'cider-mode)
