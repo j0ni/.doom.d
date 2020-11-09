@@ -48,6 +48,8 @@
 (setq modus-vivendi-theme-fringes nil)
 (setq modus-vivendi-theme-scale-headings t)
 
+(setq geiser-active-implementations '(chicken guile racket))
+
 (custom-theme-set-faces! 'modus-operandi
   '(bold :weight semibold)
   '(indent-guide-face :foreground "#c0c0c0"))
