@@ -78,13 +78,13 @@
     (setq fancy-splash-image nil)))
  (IS-MAC
   (progn
-    (setq doom-font (font-spec :family "Iosevka Comfy" :size 17 :weight 'light)
-         ;; (font-spec :family "Iosevka Comfy" :size 17 :weight 'light)
+    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 17 :weight 'light)
           line-spacing 0
           doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
     (setq doom-theme 'modus-vivendi)
+    ;;(setq doom-theme 'doom-wilmersdorf)
     ;;(setq doom-theme 'doom-draculapro)
     ;;(setq doom-theme 'draculapro)
     ;;(setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
@@ -317,10 +317,10 @@
 
   ;; set our own todo keywords
   (setq org-todo-keywords
-        '((sequence "TODO" "WAITING" "QUEUED" "INPROGRESS" "PAUSED" "|" "DONE" "ABANDONED")))
+        '((sequence "TODO(t)" "WAITING(w!)" "PAUSED(p!)" "|" "DONE(d!)" "ABANDONED(a!)")))
 
   ;; switch quickly
-  (setq org-use-fast-todo-selection t)
+  (setq org-use-fast-todo-selection 'auto)
   (setq org-priority-default ?C)
 
   ;; extra indentation
