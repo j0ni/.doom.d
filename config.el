@@ -70,14 +70,20 @@
 ;; https://github.com/hlissner/doom-emacs/issues/3172
 (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 
+;; telega has a modeline bit, but sometimes it fucks with doom modeline, so, uh,
+;; watch out I guess?
+(after! telega
+  (telega-mode-line-mode +1))
+
 (cond
  (IS-LINUX
   (progn
-    (setq doom-font (font-spec :family "Iosevka Comfy" :size 19 :weight 'semi-light)
+    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 20 :weight 'regular)
           doom-variable-pitch-font (font-spec :family "sans" :size 21))
     (setq doom-theme 'modus-vivendi)
     ;; (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
-    (setq fancy-splash-image nil)))
+    (setq fancy-splash-image nil)
+    (setq x-super-keysym 'meta)))
  (IS-MAC
   (progn
     (setq doom-font (font-spec :family "Iosevka Snuggle" :size 17 :weight 'light)
@@ -347,7 +353,10 @@
           ("s" "Shriek" entry (file+headline ,(concat org-directory "/shrieks.org") "Shrieks")
            "* %T\n%?\n")
           ("t" "Task" entry (file+headline ,(concat org-directory "/berlin.org") "Inbox")
-           "* TODO %?\n  %a\n%i")))
+           "* TODO %?\n  %a\n%i")
+          ("b" "BP Journal" entry (file+olp+datetree ,(concat org-directory "/bp.org") "Blood Pressure")
+           "* %T\n** Systolic: %^{systolic}\n** Diastolic: %^{diastolic}\n** Pulse: %^{pulse}\n** Notes\n%?\n"
+           )))
 
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-capture-mode-hook 'auto-fill-mode)
