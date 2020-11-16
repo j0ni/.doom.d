@@ -26,7 +26,7 @@
 (package! color-theme-sanityinc-tomorrow :disable t)
 ;;(package! smart-mode-line)
 (package! tide)
-(package! fennel-mode)
+(package! fennel-mode :recipe (:host gitlab :repo "technomancy/fennel-mode"))
 (package! auto-highlight-symbol :disable t)
 (package! highlight-symbol)
 (package! org-msg :disable t)

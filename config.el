@@ -117,6 +117,14 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/OrgMode")
 
+(setq org-roam-directory (concat org-directory "/org-roam"))
+(setq org-roam-capture-templates
+      `(("d" "default" plain (function org-roam--capture-get-point)
+         "%?"
+         :file-name "%<%Y%m%d%H%M%S>-${slug}"
+         :head "#+title: ${title}\n"
+         :unnarrowed t)))
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type nil)
