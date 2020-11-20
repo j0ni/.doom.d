@@ -324,6 +324,9 @@
   (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
+(add-hook 'haskell-mode-hook #'haskell-indent-mode)
+(setq haskell-indentation-electric-flag t)
+
 (after! flycheck
   (setq flycheck-indication-mode 'right-fringe)
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
