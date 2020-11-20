@@ -75,6 +75,16 @@
 (after! telega
   (telega-mode-line-mode +1))
 
+(defun toggle-dark-mode ()
+  (interactive)
+  (let ((currently-dark (custom-theme-enabled-p 'modus-vivendi)))
+    (if currently-dark
+        (setq doom-theme 'modus-operandi)
+      (setq doom-theme 'modus-vivendi))
+    (doom/reload-theme)))
+
+(map! (:leader (:prefix "t" :desc "Dark/light mode" "D" #'toggle-dark-mode)))
+
 (cond
  (IS-LINUX
   (progn
@@ -252,9 +262,9 @@
 
 (map! (:leader
        (:prefix "t"
-        :nv :desc "Toggle line truncation" "t" #'toggle-truncate-lines
-        :nv :desc "Toggle olivetti-mode" "o" #'olivetti-mode
-        :nv :desc "Toggle focus-mode" "d" #'focus-mode)))
+        :desc "Line truncation" :nv "t" #'toggle-truncate-lines
+        :desc "Olivetti mode" :nv "o" #'olivetti-mode
+        :desc "Focus mode" :nv "d" #'focus-mode)))
 
 (after! olivetti
   (setq olivetti-minimum-body-width 120))
