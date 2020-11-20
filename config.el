@@ -212,6 +212,44 @@
 
 (setq deft-directory (concat (getenv "HOME") "/Dropbox/OrgMode"))
 
+(defun unicode-fn (k)
+  (lambda ()
+    (interactive)
+    (cond
+     ((string= k "U") (insert "Ü"))
+     ((string= k "u") (insert "ü"))
+     ((string= k "A") (insert "Ä"))
+     ((string= k "a") (insert "ä"))
+     ((string= k "O") (insert "Ö"))
+     ((string= k "o") (insert "ö"))
+     ((string= k "S") (insert "ẞ"))
+     ((string= k "s") (insert "ß"))
+     ((string= k "l") (insert "λ")))))
+
+;; unicode conveniences
+(map! (:leader
+       (:prefix "U"
+        :desc "Upper-case Ü" :nv "U" (unicode-fn "U")
+        :desc "Lower-case ü" :nv "u" (unicode-fn "u")
+        :desc "Upper-case Ä" :nv "A" (unicode-fn "A")
+        :desc "Lower-case ä" :nv "a" (unicode-fn "a")
+        :desc "Upper-case Ö" :nv "O" (unicode-fn "O")
+        :desc "Lower-case ö" :nv "o" (unicode-fn "o")
+        :desc "Upper-case ẞ" :nv "S" (unicode-fn "S")
+        :desc "Lower-case ß" :nv "s" (unicode-fn "s")
+        :desc "Lower-case λ" :nv "l" (unicode-fn "l"))))
+
+(map! (:prefix "C-;"
+        :desc "Upper-case Ü" :i "U" (unicode-fn "U")
+        :desc "Lower-case ü" :i "u" (unicode-fn "u")
+        :desc "Upper-case Ä" :i "A" (unicode-fn "A")
+        :desc "Lower-case ä" :i "a" (unicode-fn "a")
+        :desc "Upper-case Ö" :i "O" (unicode-fn "O")
+        :desc "Lower-case ö" :i "o" (unicode-fn "o")
+        :desc "Upper-case ẞ" :i "S" (unicode-fn "S")
+        :desc "Lower-case ß" :i "s" (unicode-fn "s")
+        :desc "Lower-case λ" :i "l" (unicode-fn "l")))
+
 (map! (:leader
        (:prefix "t"
         :nv :desc "Toggle line truncation" "t" #'toggle-truncate-lines
