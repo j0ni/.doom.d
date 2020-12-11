@@ -16,7 +16,7 @@
 (package! dracula-theme)
 (package! paredit)
 (package! evil-paredit)
-(package! indent-guide)
+(package! indent-guide :disable t)
 (package! nyan-mode :disable t)
 (package! modus-operandi-theme)
 (package! modus-vivendi-theme)
@@ -38,6 +38,8 @@
 (package! 2048-game)
 (package! anzu :disable t)
 (package! evil-anzu :disable t)
+(package! highlight-sexp :disable t :recipe (:host github :repo "daimrod/highlight-sexp"))
+(package! highlight-parentheses)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:

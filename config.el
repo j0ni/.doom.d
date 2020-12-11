@@ -88,9 +88,10 @@
 (cond
  (IS-LINUX
   (progn
-    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 20 :weight 'regular)
+    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 19 :weight 'regular)
           doom-variable-pitch-font (font-spec :family "sans" :size 21))
     (setq doom-theme 'modus-vivendi)
+    ;; (setq doom-theme 'doom-draculapro)
     ;; (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
     (setq fancy-splash-image nil)
     (setq x-super-keysym 'meta)))
@@ -140,7 +141,8 @@
 (setq display-line-numbers-type nil)
 
 ;; Flycheck is mostly annoying, but only intolerable in Clojure.
-(setq-default flycheck-disabled-checkers '(clojure))
+;; (setq-default flycheck-disabled-checkers '(clojure))
+;; (setq-default flycheck-disabled-checkers nil)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -163,13 +165,14 @@
 
 (setq doom-modeline-icon (display-graphic-p))
 (setq doom-modeline-icon nil)
-(setq doom-modeline-buffer-file-name-style 'file-name)
+(setq doom-modeline-buffer-file-name-style 'truncate-with-project)
 (setq doom-modeline-vcs-max-length 20)
 (setq doom-modeline-workspace-name nil)
 (setq doom-modeline-persp-name t)
 (setq doom-modeline-modal-icon nil)
 (setq doom-modeline-irc t)
 
+;; (setq projectile-dynamic-mode-line nil)
 ;; (setq doom-modeline-minor-modes t)
 (setq confirm-kill-emacs nil)
 
@@ -189,8 +192,26 @@
 
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
-(setq indent-guide-char "|")
-(setq indent-guide-recursive nil)
+(use-package! indent-guide
+  :init
+  (setq indent-guide-char "|")
+  (setq indent-guide-recursive nil))
+
+(defvar sanityinc/indent-guide-on-p nil)
+(make-variable-buffer-local 'sanityinc/indent-guide-on-p)
+
+(after! (:and indent-guide company)
+  (defun sanityinc/indent-guide-disable (&rest ignore)
+    (when (setq sanityinc/indent-guide-on-p (bound-and-true-p indent-guide-mode))
+      (indent-guide-mode -1)))
+
+  (defun sanityinc/indent-guide-maybe-reenable (&rest ignore)
+    (when sanityinc/indent-guide-on-p
+      (indent-guide-mode 1)))
+
+  (add-hook 'company-completion-started-hook 'sanityinc/indent-guide-disable)
+  (add-hook 'company-completion-finished-hook 'sanityinc/indent-guide-maybe-reenable)
+  (add-hook 'company-completion-cancelled-hook 'sanityinc/indent-guide-maybe-reenable))
 
 ;; I mean, _seriously_...
 (setq sentence-end-double-space nil)
@@ -307,7 +328,15 @@
 
 (add-hooks my-lisp-modes #'paredit-mode)
 (add-hooks my-lisp-modes #'evil-paredit-mode)
-(add-hooks my-lisp-modes #'indent-guide-mode)
+;;(add-hooks my-lisp-modes #'indent-guide-mode)
+;;(add-hooks my-lisp-modes #'highlight-sexp-mode)
+(add-hooks my-lisp-modes #'highlight-parentheses-mode)
+
+(add-hook 'cider-repl-mode-hook #'paredit-mode)
+(add-hook 'cider-repl-mode-hook #'evil-paredit-mode)
+
+(after! highlight-sexp
+  (setq hl-sexp-background-color "#201020"))
 
 ;; doom already includes diff-hl, but it switches it on in the margin rather
 ;; than fringe - so first switch it off
@@ -371,6 +400,9 @@
 
 ;; Some org-mode setup
 (after! org
+  ;; make it short to start with
+  (setq org-startup-folded t)
+
   ;; Set agenda file(s)
   (setq org-agenda-files (list (concat org-directory "/journal.org")
                                (concat org-directory "/berlin.org")
