@@ -417,6 +417,10 @@ frames with exactly two windows."
   :hook ((prog-mode . highlight-symbol-mode)
          (dired-mode . highlight-symbol-mode)))
 
+(use-package! browse-kill-ring
+  :init
+  (browse-kill-ring-default-keybindings))
+
 (use-package! auto-highlight-symbol
   :init
   (global-auto-highlight-symbol-mode t)
