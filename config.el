@@ -460,7 +460,17 @@ frames with exactly two windows."
   ;; (remove-hook 'clojure-mode-hook #'er/add-clojure-mode-expansions)
   ;; (remove-hook 'clojure-mode-hook #'clj-refactor-mode)
   (setq cider-use-fringe-indicators nil)
-  (setq cider-prompt-for-symbol nil))
+  (setq cider-prompt-for-symbol nil)
+  (setq cider-save-file-on-load t)
+  (setq cider-prefer-local-resources t)
+  (setq cider-eldoc-display-context-dependent-info t)
+
+  (add-to-list 'cider-test-defining-forms "defruns")
+  (evil-set-initial-state 'cider-repl-mode 'emacs)
+
+  (map! :map cider-repl-mode-map
+        :ei "RET" #'cider-repl-newline-and-indent
+        :ei "C-RET" #'cider-repl-return))
 
 (after! inf-clojure
   (inf-clojure-update-feature 'clojure 'completion "(complete.core/completions \"%s\")"))
