@@ -437,7 +437,10 @@ frames with exactly two windows."
 (setq haskell-indentation-electric-flag t)
 
 (after! flycheck
+  (tooltip-mode -1)
   (setq flycheck-indication-mode 'right-fringe)
+  (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
+  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
       [16 48 112 240 112 48 16] nil nil 'center))
 
