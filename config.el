@@ -480,39 +480,39 @@ frames with exactly two windows."
   ;; make it short to start with
   (setq org-startup-folded t)
 
-  ;; Set agenda file(s)
-  (setq org-agenda-files (list (concat org-directory "/journal.org")
-                               (concat org-directory "/berlin.org")
-                               (concat org-directory "/shrieks.org")))
-
-  (setq org-agenda-span 14)
-  ;; (setq org-agenda-start-on-weekday nil)
-
-  ;; prevent org-mode hijacking arrow keys
-  ;;(setq org-replace-disputed-keys t)
-
   ;; set our own todo keywords
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAITING(w!)" "PAUSED(p!)" "|" "DONE(d!)" "ABANDONED(a!)")))
+        '((sequence "TODO(t)"
+                    "WAITING(w!)"
+                    "PAUSED(p!)"
+                    "|"
+                    "DONE(d!)"
+                    "ABANDONED(a!)")))
 
   ;; switch quickly
   (setq org-use-fast-todo-selection 'auto)
-  (setq org-priority-default ?C)
+  (setq org-priority-default ?c)
+
+  (setq org-log-done t)
+  (setq org-log-into-drawer t)
+
+  (setq org-special-ctrl-a/e t)
+  (setq org-special-ctrl-k t)
 
   ;; extra indentation
   (setq org-adapt-indentation t)
 
-  ;; Use cider as the clojure execution backend
-  ;; (setq org-babel-clojure-backend 'cider)
-
-  ;; Let's have pretty source code blocks
+  ;; let's have pretty source code blocks
   (setq org-edit-src-content-indentation 0
         org-src-tab-acts-natively t
         org-src-fontify-natively t
         org-confirm-babel-evaluate nil)
 
+  (setq org-use-speed-commands t)
+
   ;; org-capture
   (require 'org-datetree)
+  (require 'org-tempo)
 
   (setq org-default-notes-file (concat org-directory "/berlin.org"))
   (setq org-capture-templates
@@ -523,20 +523,41 @@ frames with exactly two windows."
           ("t" "Task" entry (file+headline ,(concat org-directory "/berlin.org") "Inbox")
            "* TODO %?\n  %a\n%i")
           ("b" "BP Journal" entry (file+olp+datetree ,(concat org-directory "/bp.org") "Blood Pressure")
-           "* %T\n** Systolic: %^{systolic}\n** Diastolic: %^{diastolic}\n** Pulse: %^{pulse}\n** Notes\n%?\n"
-           )))
-
-  (add-hook 'org-mode-hook 'auto-fill-mode)
-  (add-hook 'org-capture-mode-hook 'auto-fill-mode)
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (add-hook
-               'before-save-hook 'org-update-all-dblocks nil 'local-only)))
-
-  (org-clock-persistence-insinuate)
+           "* %T\n** Systolic: %^{systolic}\n** Diastolic: %^{diastolic}\n** Pulse: %^{pulse}\n** Notes\n%?\n")))
 
   (dolist (tag '(home xapix sanity rachel lauren alice grace family self))
     (add-to-list 'org-tag-persistent-alist tag)))
+
+(after! evil-org
+  (remove-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h))
+
+(add-hook! org-mode :append
+           #'visual-line-mode
+           (lambda () (add-hook 'before-save-hook 'org-update-all-dblocks nil 'local-only)))
+(add-hook! org-capture-mode :append #'visual-line-mode)
+
+(after! org-clock
+  (setq org-clock-persist t)
+  (org-clock-persistence-insinuate))
+
+(after! org-agenda
+  ;; set agenda file(s)
+  (setq org-agenda-files (list (concat org-directory "/journal.org")
+                               (concat org-directory "/berlin.org")
+                               (concat org-directory "/shrieks.org")))
+  (setq org-agenda-span 14))
+
+(use-package! org-super-agenda
+  :after org-agenda
+  :custom
+  ((org-super-agenda-groups '((:auto-dir-name t))))
+  :hook
+  ((org-agenda-mode . org-super-agenda-mode)))
+
+(after! (:and org org-roam)
+  (setq org-roam-directory (expand-file-name "org-roam" org-directory))
+  (setq org-roam-completion-system 'ivy)
+  (setq org-roam-buffer-position 'bottom))
 
 (if IS-MAC
     (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
