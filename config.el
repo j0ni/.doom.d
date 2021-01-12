@@ -78,8 +78,9 @@
 
 ;; telega has a modeline bit, but sometimes it fucks with doom modeline, so, uh,
 ;; watch out I guess?
-;; (after! telega
-;;   (telega-mode-line-mode +1))
+(after! telega
+  (evil-set-initial-state 'telega-chat-mode 'emacs)
+  (telega-mode-line-mode +1))
 
 (defun toggle-dark-mode ()
   (interactive)
