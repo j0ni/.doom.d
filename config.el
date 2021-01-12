@@ -454,12 +454,6 @@ frames with exactly two windows."
   (setq ivy-use-virtual-buffers t))
 
 (add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode))
-;; (after! fennel-mode
-;;   (add-hook 'fennel-mode-hook
-;;             (lambda ()
-;;               (setq-local inferior-lisp-program
-;;                           (if IS-MAC "/usr/local/bin/fennel --repl"
-;;                             "fennel --repl")))))
 
 (after! cider
   ;; (remove-hook 'clojure-mode-hook #'cider-mode)
