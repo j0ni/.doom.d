@@ -245,8 +245,63 @@
 
 ;; (fringe-mode nil)
 ;; (setq-default fring-mode nil)
+;; Shamelessly lifted from @zarkone's config, and tweaked
+(defun j0ni/delete-whitespace (&optional backward-only)
+  "Replaces all spaces, tabs and newlinesaround point with a single space.
+If BACKWARD-ONLY is non-nil, only delete them before point."
+  (interactive "*P")
+  (let ((orig-pos (point)))
+    (delete-region
+     (if backward-only
+         orig-pos
+       (progn
+         (skip-chars-forward " \t\n")
+         (constrain-to-field nil orig-pos t)))
+     (progn
+       (skip-chars-backward " \t\n")
+       (constrain-to-field nil orig-pos)))
+    (unless backward-only (insert " "))))
 
-(map! "C-\\" #'company-complete-common-or-cycle)
+;; Been missing yooooou
+(defun j0ni/insert-shrug ()
+  (interactive)
+  (insert "¯\\_(ツ)_/¯"))
+
+;; Don't know where I found this, but it I didn't write it
+(defun j0ni/toggle-window-split ()
+  "Vertical split shows more of each line, horizontal split shows
+more lines. This code toggles between them. It only works for
+frames with exactly two windows."
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
+
+(map! :ei "C-\\" #'company-complete-common-or-cycle
+      :ein "C-c s" #'j0ni/insert-shrug
+      :ei "C-x |" #'j0ni/toggle-window-split
+      :n "g |" #'j0ni/toggle-window-split
+      :ei "C-c ." #'j0ni/delete-whitespace
+      :n "g ." #'j0ni/delete-whitespace)
 
 (setq deft-directory (concat (getenv "HOME") "/Dropbox/OrgMode"))
 
