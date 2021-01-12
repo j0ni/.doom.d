@@ -66,6 +66,12 @@
 (setq-default truncate-lines nil)
 (setq-default word-wrap nil)
 
+(after! ivy-file-preview
+  (setq ivy-file-preview-preview-only nil)
+  ;; currently this breaks ivy :(
+  ;; (ivy-file-preview-mode 1)
+  )
+
 ;; for some reason org-mode won't let me type a newline when this is on.
 ;; https://github.com/hlissner/doom-emacs/issues/3172
 (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
