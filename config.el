@@ -389,20 +389,22 @@ frames with exactly two windows."
   (setq lsp-rust-analyzer-cargo-load-out-dirs-from-check t))
 
 (defvar my-lisp-modes
-  '(emacs-lisp-mode clojure-mode scheme-mode geiser-mode racket-mode lisp-mode))
+  '(emacs-lisp-mode
+    cider-repl-mode
+    clojure-mode
+    scheme-mode
+    geiser-mode
+    racket-mode
+    racket-repl-mode
+    lisp-mode))
 
 (defun add-hooks (modes func)
   (dolist (mode modes)
     (add-hook (intern (concat (symbol-name mode) "-hook")) func)))
 
-(add-hooks my-lisp-modes #'paredit-mode)
-(add-hooks my-lisp-modes #'evil-paredit-mode)
-;;(add-hooks my-lisp-modes #'indent-guide-mode)
-;;(add-hooks my-lisp-modes #'highlight-sexp-mode)
-(add-hooks my-lisp-modes #'highlight-parentheses-mode)
-
-(add-hook 'cider-repl-mode-hook #'paredit-mode)
-(add-hook 'cider-repl-mode-hook #'evil-paredit-mode)
+(after! smartparens
+  (add-hooks my-lisp-modes #'smartparens-strict-mode)
+  (add-hooks my-lisp-modes #'sp-use-paredit-bindings))
 
 (after! highlight-sexp
   (setq hl-sexp-background-color "#201020"))
@@ -410,11 +412,6 @@ frames with exactly two windows."
 ;; doom already includes diff-hl, but it switches it on in the margin rather
 ;; than fringe - so first switch it off
 (diff-hl-margin-mode -1)
-;; and add some hooks for it
-;; (add-hook 'prog-mode-hook #'turn-on-diff-hl-mode)
-;; (add-hook 'org-mode-hook #'turn-on-diff-hl-mode)
-;; (add-hook 'dired-mode-hook #'diff-hl-dired-mode)
-;; (add-hook 'diff-hl-mode-hook #'diff-hl-flydiff-mode)
 
 (use-package! highlight-symbol
   :hook ((prog-mode . highlight-symbol-mode)
