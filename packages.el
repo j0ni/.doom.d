@@ -9,13 +9,14 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
+(package! diminish)
 (package! solaire-mode :disable t)
 ;;(package! git-gutter :disable t)
 ;;(package! git-gutter-fringe :disable t)
 ;;(package! diff-hl)
 (package! dracula-theme)
 (package! indent-guide :disable t)
-(package! nyan-mode :disable t)
+(package! nyan-mode)
 (package! modus-themes)
 ;; (package! modus-vivendi-theme)
 (package! leuven-theme :disable t)

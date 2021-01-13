@@ -19,7 +19,10 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
+(column-number-mode 1)
 
+(use-package! nyan-mode
+  :hook ((after-init . nyan-mode)))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -95,8 +98,9 @@
 (cond
  (IS-LINUX
   (progn
-    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 19 :weight 'regular)
-          doom-variable-pitch-font (font-spec :family "sans" :size 21))
+    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 36 :weight 'regular)
+          doom-unicode-font (font-spec :family "Symbola")
+          doom-variable-pitch-font (font-spec :family "sans" :size 36))
     (setq doom-theme 'modus-vivendi)
     ;; (setq doom-theme 'doom-draculapro)
     ;; (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
@@ -168,6 +172,30 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(defmacro j0ni/diminish (feature mode &optional to-what)
+  `(eval-after-load ,feature
+     '(diminish ,mode ,to-what)))
+
+(j0ni/diminish 'git-gutter 'git-gutter-mode)
+(j0ni/diminish 'ws-butler 'ws-butler-mode)
+(j0ni/diminish 'highlight-symbol 'highlight-symbol-mode)
+(j0ni/diminish 'smartparens 'smartparens-mode " ()")
+(j0ni/diminish 'better-jumper 'better-jumper-local-mode)
+(j0ni/diminish 'company 'company-mode)
+(j0ni/diminish 'ivy 'ivy-mode)
+(j0ni/diminish 'org-roam 'org-roam-mode)
+(j0ni/diminish 'gcmh 'gcmh-mode)
+(j0ni/diminish 'evil-traces 'evil-traces-mode)
+(j0ni/diminish 'evil-snipe 'evil-snipe-mode)
+(j0ni/diminish 'evil-snipe 'evil-snipe-local-mode)
+(j0ni/diminish 'outline 'outline-minor-mode)
+(j0ni/diminish 'evil-escape 'evil-escape-mode)
+(j0ni/diminish 'evil-goggles 'evil-goggles-mode)
+(j0ni/diminish 'whitespace 'whitespace-mode)
+(j0ni/diminish 'which-key 'which-key-mode)
+(j0ni/diminish 'projectile 'projectile-mode)
+(j0ni/diminish 'eldoc 'eldoc-mode)
+
 (setq doom-modeline-height 1)
 
 (setq doom-modeline-icon (display-graphic-p))
@@ -236,7 +264,8 @@
           ("Europe/Berlin" "Berlin")
           ("Asia/Hong_Kong" "Hong Kong")
           ("Asia/Tokyo" "Tokyo")))
-  (display-time-mode))
+  ;; (display-time-mode)
+  )
 
 ;; (after! treemacs
 ;;   (delq! 'treemacs-mode aw-ignored-buffers))
