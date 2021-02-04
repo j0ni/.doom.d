@@ -38,27 +38,56 @@
 ;;(setq doom-theme nil)
 ;;(setq doom-theme 'dracula)
 
-(setq modus-operandi-theme-bold-constructs t)
-(setq modus-operandi-theme-mode-line nil)
-(setq modus-operandi-theme-faint-syntax nil)
-(setq modus-operandi-theme-fringes nil)
-(setq modus-operandi-theme-scale-headings t)
+(use-package! ibuffer
+  :custom
+  (ibuffer-expert t)
+  (ibuffer-display-summary nil)
+  (ibuffer-use-other-window nil)
+  (ibuffer-show-empty-filter-groups nil)
+  (ibuffer-movement-cycle nil)
+  (ibuffer-default-sorting-mode 'filename/process)
+  (ibuffer-use-header-line t)
+  (ibuffer-default-shrink-to-minimum-size nil)
+  (ibuffer-saved-filter-groups nil)
+  (ibuffer-old-time 48))
 
+(use-package! ibuffer-vc
+  :hook ((ibuffer . j0ni/ibuffer-vc-hook))
+  :custom
+  (ibuffer-formats
+   '((mark modified read-only vc-status-mini " "
+           (name 18 18 :left :elide)
+           " "
+           (size 9 -1 :right)
+           " "
+           (mode 16 16 :left :elide)
+           " "
+           (vc-status 16 16 :left)
+           " "
+           vc-relative-file)))
+  :init
+  (defun j0ni/ibuffer-vc-hook ()
+    (ibuffer-auto-mode 1)
+    (ibuffer-vc-set-filter-groups-by-vc-root)
+    (unless (eq ibuffer-sorting-mode 'alphabetic)
+      (ibuffer-do-sort-by-alphabetic))))
 
-(setq modus-vivendi-theme-bold-constructs nil)
-(setq modus-vivendi-theme-mode-line nil)
-(setq modus-vivendi-theme-faint-syntax nil)
-(setq modus-vivendi-theme-fringes nil)
-(setq modus-vivendi-theme-scale-headings t)
+(use-package! modus-themes
+  :init
+  (modus-themes-load-themes)
+  :custom
+  (modus-themes-bold-constructs nil)
+  (modus-themes-syntax nil)
+  (modus-themes-fringes nil)
+  (modus-themes-scale-headings t)
+  (modus-themes-completions nil)
+  (modus-themes-mode-line nil)
+  ;; (modus-themes-mode-line '3d)
+  :config
+  (custom-theme-set-faces! '(modus-operandi modus-vivendi)
+    '(bold :weight semibold)))
 
 (setq geiser-active-implementations '(chicken guile racket))
-
-(custom-theme-set-faces! 'modus-operandi
-  '(bold :weight semibold)
-  '(indent-guide-face :foreground "#c0c0c0"))
-
-(custom-theme-set-faces! 'modus-vivendi
-  '(bold :weight semibold))
 
 (custom-theme-set-faces! '(dracula draculapro doom-dracula-pro)
   '(bold :weight semibold)
@@ -69,38 +98,16 @@
 (setq-default truncate-lines nil)
 (setq-default word-wrap nil)
 
-(after! ivy-file-preview
-  (setq ivy-file-preview-preview-only nil)
-  ;; currently this breaks ivy :(
-  ;; (ivy-file-preview-mode 1)
-  )
-
-;; for some reason org-mode won't let me type a newline when this is on.
-;; https://github.com/hlissner/doom-emacs/issues/3172
-(add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
-
-;; telega has a modeline bit, but sometimes it fucks with doom modeline, so, uh,
-;; watch out I guess?
 (after! telega
-  (evil-set-initial-state 'telega-chat-mode 'emacs)
-  (telega-mode-line-mode +1))
-
-(defun toggle-dark-mode ()
-  (interactive)
-  (let ((currently-dark (custom-theme-enabled-p 'modus-vivendi)))
-    (if currently-dark
-        (setq doom-theme 'modus-operandi)
-      (setq doom-theme 'modus-vivendi))
-    (doom/reload-theme)))
-
-(map! (:leader (:prefix "t" :desc "Dark/light mode" "D" #'toggle-dark-mode)))
+  ;; (telega-mode-line-mode +1)
+  (evil-set-initial-state 'telega-chat-mode 'emacs))
 
 (cond
  (IS-LINUX
   (progn
-    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 36 :weight 'regular)
+    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 40 :weight 'regular)
           doom-unicode-font (font-spec :family "Symbola")
-          doom-variable-pitch-font (font-spec :family "sans" :size 36))
+          doom-variable-pitch-font (font-spec :family "sans" :size 40))
     (setq doom-theme 'modus-vivendi)
     ;; (setq doom-theme 'doom-draculapro)
     ;; (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
@@ -171,31 +178,6 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-
-(defmacro j0ni/diminish (feature mode &optional to-what)
-  `(eval-after-load ,feature
-     '(diminish ,mode ,to-what)))
-
-(j0ni/diminish 'git-gutter 'git-gutter-mode)
-(j0ni/diminish 'ws-butler 'ws-butler-mode)
-(j0ni/diminish 'highlight-symbol 'highlight-symbol-mode)
-(j0ni/diminish 'smartparens 'smartparens-mode " ()")
-(j0ni/diminish 'better-jumper 'better-jumper-local-mode)
-(j0ni/diminish 'company 'company-mode)
-(j0ni/diminish 'ivy 'ivy-mode)
-(j0ni/diminish 'org-roam 'org-roam-mode)
-(j0ni/diminish 'gcmh 'gcmh-mode)
-(j0ni/diminish 'evil-traces 'evil-traces-mode)
-(j0ni/diminish 'evil-snipe 'evil-snipe-mode)
-(j0ni/diminish 'evil-snipe 'evil-snipe-local-mode)
-(j0ni/diminish 'outline 'outline-minor-mode)
-(j0ni/diminish 'evil-escape 'evil-escape-mode)
-(j0ni/diminish 'evil-goggles 'evil-goggles-mode)
-(j0ni/diminish 'whitespace 'whitespace-mode)
-(j0ni/diminish 'which-key 'which-key-mode)
-(j0ni/diminish 'projectile 'projectile-mode)
-(j0ni/diminish 'eldoc 'eldoc-mode)
-
 (setq doom-modeline-height 1)
 
 (setq doom-modeline-icon (display-graphic-p))
@@ -206,6 +188,31 @@
 (setq doom-modeline-persp-name t)
 (setq doom-modeline-modal-icon nil)
 (setq doom-modeline-irc t)
+
+(when (not (featurep! :ui modeline))
+  (defmacro j0ni/diminish (feature mode &optional to-what)
+    `(eval-after-load ,feature
+       '(diminish ,mode ,to-what)))
+
+  (j0ni/diminish 'git-gutter 'git-gutter-mode)
+  (j0ni/diminish 'ws-butler 'ws-butler-mode)
+  (j0ni/diminish 'highlight-symbol 'highlight-symbol-mode)
+  (j0ni/diminish 'smartparens 'smartparens-mode " ()")
+  (j0ni/diminish 'better-jumper 'better-jumper-local-mode)
+  (j0ni/diminish 'company 'company-mode)
+  (j0ni/diminish 'ivy 'ivy-mode)
+  (j0ni/diminish 'org-roam 'org-roam-mode)
+  (j0ni/diminish 'gcmh 'gcmh-mode)
+  (j0ni/diminish 'evil-traces 'evil-traces-mode)
+  (j0ni/diminish 'evil-snipe 'evil-snipe-mode)
+  (j0ni/diminish 'evil-snipe 'evil-snipe-local-mode)
+  (j0ni/diminish 'outline 'outline-minor-mode)
+  (j0ni/diminish 'evil-escape 'evil-escape-mode)
+  (j0ni/diminish 'evil-goggles 'evil-goggles-mode)
+  (j0ni/diminish 'whitespace 'whitespace-mode)
+  (j0ni/diminish 'which-key 'which-key-mode)
+  (j0ni/diminish 'projectile 'projectile-mode)
+  (j0ni/diminish 'eldoc 'eldoc-mode))
 
 ;; (setq projectile-dynamic-mode-line nil)
 ;; (setq doom-modeline-minor-modes t)
@@ -227,27 +234,6 @@
 
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
-(use-package! indent-guide
-  :init
-  (setq indent-guide-char "|")
-  (setq indent-guide-recursive nil))
-
-(defvar sanityinc/indent-guide-on-p nil)
-(make-variable-buffer-local 'sanityinc/indent-guide-on-p)
-
-(after! (:and indent-guide company)
-  (defun sanityinc/indent-guide-disable (&rest ignore)
-    (when (setq sanityinc/indent-guide-on-p (bound-and-true-p indent-guide-mode))
-      (indent-guide-mode -1)))
-
-  (defun sanityinc/indent-guide-maybe-reenable (&rest ignore)
-    (when sanityinc/indent-guide-on-p
-      (indent-guide-mode 1)))
-
-  (add-hook 'company-completion-started-hook 'sanityinc/indent-guide-disable)
-  (add-hook 'company-completion-finished-hook 'sanityinc/indent-guide-maybe-reenable)
-  (add-hook 'company-completion-cancelled-hook 'sanityinc/indent-guide-maybe-reenable))
-
 ;; I mean, _seriously_...
 (setq sentence-end-double-space nil)
 
@@ -266,9 +252,6 @@
           ("Asia/Tokyo" "Tokyo")))
   ;; (display-time-mode)
   )
-
-;; (after! treemacs
-;;   (delq! 'treemacs-mode aw-ignored-buffers))
 
 (setq +vc-gutter-default-style nil)
 
@@ -325,12 +308,18 @@ frames with exactly two windows."
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
 
-(map! :ei "C-\\" #'company-complete-common-or-cycle
+(map! :ei "M-\\" #'company-complete
       :ein "C-c s" #'j0ni/insert-shrug
       :ei "C-x |" #'j0ni/toggle-window-split
       :n "g |" #'j0ni/toggle-window-split
       :ei "C-c ." #'j0ni/delete-whitespace
-      :n "g ." #'j0ni/delete-whitespace)
+      :n "g ." #'j0ni/delete-whitespace
+      (:map company-active-map
+       :ei "M-\\" #'company-complete-common-or-cycle
+       :ei "C-j" #'company-complete-selection
+       :ei "C-n" #'company-select-next
+       :ei "C-p" #'company-select-previous))
+
 
 (setq deft-directory (concat (getenv "HOME") "/Dropbox/OrgMode"))
 
@@ -407,9 +396,6 @@ frames with exactly two windows."
                    `(:host "localhost"
                      :tls nil
                      :port 6778)))
-
-(setq ido-use-virtual-buffers t)
-(setq ido-ubiquitous-allow-on-functional-collection t)
 
 (setq +format-on-save-enabled-modes '(python-mode rustic-mode))
 
@@ -501,10 +487,11 @@ frames with exactly two windows."
         :ei "RET" #'cider-repl-newline-and-indent
         :ei "C-RET" #'cider-repl-return))
 
-(after! inf-clojure
-  (inf-clojure-update-feature 'clojure 'completion "(complete.core/completions \"%s\")"))
+;; (after! inf-clojure
+;;   (inf-clojure-update-feature 'clojure 'completion "(complete.core/completions \"%s\")"))
 
 ;; Some org-mode setup
+
 (after! org
   ;; make it short to start with
   (setq org-startup-folded t)
@@ -562,7 +549,9 @@ frames with exactly two windows."
 
 (add-hook! org-mode :append
            #'visual-line-mode
-           (lambda () (add-hook 'before-save-hook 'org-update-all-dblocks nil 'local-only)))
+           (lambda () (add-hook 'before-save-hook 'org-update-all-dblocks nil 'local-only))
+           (lambda () (electric-indent-local-mode -1)))
+
 (add-hook! org-capture-mode :append #'visual-line-mode)
 
 (after! org-clock
