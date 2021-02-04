@@ -76,13 +76,13 @@
   :init
   (modus-themes-load-themes)
   :custom
-  (modus-themes-bold-constructs nil)
+  (modus-themes-bold-constructs t)
   (modus-themes-syntax nil)
   (modus-themes-fringes nil)
   (modus-themes-scale-headings t)
   (modus-themes-completions nil)
-  (modus-themes-mode-line nil)
-  ;; (modus-themes-mode-line '3d)
+  ;; (modus-themes-mode-line nil)
+  (modus-themes-mode-line '3d)
   :config
   (custom-theme-set-faces! '(modus-operandi modus-vivendi)
     '(bold :weight semibold)))
@@ -100,14 +100,15 @@
 
 (after! telega
   ;; (telega-mode-line-mode +1)
+  (telega-notifications-mode 1)
   (evil-set-initial-state 'telega-chat-mode 'emacs))
 
 (cond
  (IS-LINUX
   (progn
-    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 40 :weight 'regular)
+    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 24 :weight 'light)
           doom-unicode-font (font-spec :family "Symbola")
-          doom-variable-pitch-font (font-spec :family "sans" :size 40))
+          doom-variable-pitch-font (font-spec :family "sans" :size 24))
     (setq doom-theme 'modus-vivendi)
     ;; (setq doom-theme 'doom-draculapro)
     ;; (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
@@ -222,7 +223,7 @@
 (setq treemacs-is-never-other-window t)
 
 (setq doom-scratch-initial-major-mode 'lisp-interaction-mode)
-(setq company-idle-delay nil)
+(setq company-idle-delay 0.9)
 
 (setq lsp-ui-sideline-enable nil)
 (setq lsp-enable-symbol-highlighting nil)
@@ -397,6 +398,9 @@ frames with exactly two windows."
                      :tls nil
                      :port 6778)))
 
+(use-package! ctrlf
+  :init (ctrlf-mode 1))
+
 (setq +format-on-save-enabled-modes '(python-mode rustic-mode))
 
 (after! lsp
@@ -417,9 +421,10 @@ frames with exactly two windows."
   (dolist (mode modes)
     (add-hook (intern (concat (symbol-name mode) "-hook")) func)))
 
-(after! smartparens
-  (add-hooks my-lisp-modes #'smartparens-strict-mode)
-  (add-hooks my-lisp-modes #'sp-use-paredit-bindings))
+(use-package! paredit
+  :init
+  (add-hooks my-lisp-modes #'enable-paredit-mode)
+  (add-hook! paredit :after #'evil-paredit-mode))
 
 (after! highlight-sexp
   (setq hl-sexp-background-color "#201020"))
@@ -450,6 +455,8 @@ frames with exactly two windows."
 
 (add-hook 'haskell-mode-hook #'haskell-indent-mode)
 (setq haskell-indentation-electric-flag t)
+
+(tooltip-mode -1)
 
 (after! flycheck
   (tooltip-mode -1)
@@ -606,7 +613,7 @@ frames with exactly two windows."
         mu4e-change-filenames-when-moving t
         mu4e-headers-hide-predicate nil
         mu4e-headers-include-related t
-        mu4e-split-view 'single-window
+        mu4e-split-view nil
         mu4e-headers-fields '((:human-date . 12)
                               (:flags . 6)
                               (:mailing-list . 16)
