@@ -87,6 +87,11 @@
   (custom-theme-set-faces! '(modus-operandi modus-vivendi)
     '(bold :weight semibold)))
 
+(use-package! moody
+  :config
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode))
+
 (setq geiser-active-implementations '(chicken guile racket))
 
 (custom-theme-set-faces! '(dracula draculapro doom-dracula-pro)
@@ -179,16 +184,22 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(setq doom-modeline-height 1)
+;; (setq doom-modeline-height 51)
+;; (setq doom-modeline-bar-width 3)
 
-(setq doom-modeline-icon (display-graphic-p))
+;; (setq doom-modeline-icon (display-graphic-p))
 (setq doom-modeline-icon nil)
+;; (setq doom-modeline-modal-icon nil)
+;; (setq doom-modeline-major-mode-icon nil)
+;; (setq doom-modeline-major-mode-color-icon nil)
+;; (setq doom-modeline-persp-icon nil)
 (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
 (setq doom-modeline-vcs-max-length 20)
 (setq doom-modeline-workspace-name nil)
 (setq doom-modeline-persp-name t)
-(setq doom-modeline-modal-icon nil)
 (setq doom-modeline-irc t)
+
+(setq image-scaling-factor 1.2)
 
 (when (not (featurep! :ui modeline))
   (defmacro j0ni/diminish (feature mode &optional to-what)
@@ -222,7 +233,12 @@
 (setq treemacs-no-png-images nil)
 (setq treemacs-is-never-other-window t)
 
-(setq doom-scratch-initial-major-mode 'lisp-interaction-mode)
+(setq initial-major-mode 'lisp-interaction-mode)
+(setq initial-scratch-message "\
+;; This buffer is for text that is not saved, and for Lisp evaluation.
+;; To create a file, visit it with \\[find-file] and enter text in its buffer.
+
+")
 (setq company-idle-delay 0.9)
 
 (setq lsp-ui-sideline-enable nil)
@@ -458,11 +474,15 @@ frames with exactly two windows."
 
 (tooltip-mode -1)
 
-(after! flycheck
-  (tooltip-mode -1)
-  (setq flycheck-indication-mode 'right-fringe)
+(use-package! flycheck
+  :config
   (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
+  :custom
+  (flycheck-indication-mode 'right-fringe)
+  (flycheck-help-echo-function nil)
+  (flycheck-check-syntax-automatically '(save idle-change mode-enabled)))
+
+(after! flycheck
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
       [16 48 112 240 112 48 16] nil nil 'center))
 
@@ -661,7 +681,7 @@ frames with exactly two windows."
                                                   ("/Fastmail/sent-mail" . ?s)
                                                   ("/Fastmail/drafts" . ?d)
                                                   ("/Fastmail/trash" . ?t)))
-                       (mu4e-compose-signature . "https://j0ni.ca ~ https://keybase.io/j0ni")
+                       (mu4e-compose-signature . "In this world / we walk on the roof of hell / gazing at flowers\n    - Kobayashi Issa\n\nhttps://j0ni.ca ~ https://keybase.io/j0ni")
                        (mu4e-bookmarks . ,(list (j0ni/mu4e-bookmark "Fastmail" "7" ?w)
                                                 (j0ni/mu4e-bookmark "Fastmail" "30" ?m)))
                        (smtpmail-smtp-user . "j0ni@fastmail.com")
