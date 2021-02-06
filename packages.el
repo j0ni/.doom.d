@@ -44,6 +44,7 @@
 (package! ibuffer-vc)
 (package! moody :disable t)
 (package! almost-mono-themes)
+(package! flycheck-popup-tip :disable t)
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format

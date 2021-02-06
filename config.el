@@ -6,37 +6,22 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
+
 (setq user-full-name "Jon Irving"
       user-mail-address "j@lollyshouse.ca")
-
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-(column-number-mode 1)
-
-(use-package! nyan-mode
-  :hook ((after-init . nyan-mode)))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (load! "draculapro-theme.el")
 (load! "doom-draculapro-theme.el")
-;;(setq doom-theme 'doom-wilmersdorf)
-;;(setq doom-theme 'doom-sourcerer)
-;;(setq doom-theme 'doom-outrun-electric)
-;;(setq doom-theme 'doom-rouge)
 ;;(setq doom-draculapro-brighter-modeline t)
 ;;(setq doom-theme 'doom-draculapro)
-;;(setq doom-theme nil)
-;;(setq doom-theme 'dracula)
+
+(setq shr-color-visible-luminance-min 90)
+(advice-add #'shr-colorize-region :around (defun shr-no-colorise-region (&rest ignore)))
+
+(column-number-mode 1)
 
 (use-package! ibuffer
   :custom
@@ -108,6 +93,17 @@
   (telega-notifications-mode 1)
   (evil-set-initial-state 'telega-chat-mode 'emacs))
 
+;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
+;; are the three important ones:
+;;
+;; + `doom-font'
+;; + `doom-variable-pitch-font'
+;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;;   presentations or streaming.
+;;
+;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; font string.
+
 (cond
  (IS-LINUX
   (progn
@@ -129,13 +125,7 @@
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
     (setq doom-theme 'modus-vivendi)
-    ;;(setq doom-theme 'doom-wilmersdorf)
-    ;;(setq doom-theme 'doom-draculapro)
-    ;;(setq doom-theme 'draculapro)
     (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
-    ;; (setq fancy-splash-image "~/Downloads/rebel.png")
-    ;; (setq fancy-splash-image
-    ;;       "~/Dropbox/Home/Pictures/Death_Star/000000-death-star-png/000000-death-star-512.png")
     )))
 
 (custom-set-faces! '(bold :weight semibold))
