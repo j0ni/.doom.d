@@ -111,13 +111,15 @@
 (cond
  (IS-LINUX
   (progn
-    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 24 :weight 'light)
+    (setq doom-font (font-spec :family "PragmataPro Mono Liga" :size 36 :weight 'light)
+          ;; doom-font (font-spec :family "Iosevka Snuggle" :size 40 :weight 'light)
           doom-unicode-font (font-spec :family "Symbola")
-          doom-variable-pitch-font (font-spec :family "sans" :size 24))
+          doom-variable-pitch-font (font-spec :family "sans" :size 36))
     (setq doom-theme 'modus-vivendi)
-    ;; (setq doom-theme 'doom-draculapro)
-    ;; (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
-    (setq fancy-splash-image nil)
+    ;; (setq doom-theme 'minimal)
+    (setq doom-theme 'almost-mono-black)
+    (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
+    ;; (setq fancy-splash-image nil)
     (setq x-super-keysym 'meta)))
  (IS-MAC
   (progn
@@ -130,11 +132,13 @@
     ;;(setq doom-theme 'doom-wilmersdorf)
     ;;(setq doom-theme 'doom-draculapro)
     ;;(setq doom-theme 'draculapro)
-    ;;(setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
-    (setq fancy-splash-image "~/Downloads/rebel.png")
+    (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
+    ;; (setq fancy-splash-image "~/Downloads/rebel.png")
     ;; (setq fancy-splash-image
     ;;       "~/Dropbox/Home/Pictures/Death_Star/000000-death-star-png/000000-death-star-512.png")
     )))
+
+(custom-set-faces! '(bold :weight semibold))
 
 (defun setup-tide-mode ()
   (interactive)
@@ -184,7 +188,7 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-;; (setq doom-modeline-height 51)
+;; (setq doom-modeline-height 25)
 ;; (setq doom-modeline-bar-width 3)
 
 ;; (setq doom-modeline-icon (display-graphic-p))
@@ -199,7 +203,8 @@
 (setq doom-modeline-persp-name t)
 (setq doom-modeline-irc t)
 
-(setq image-scaling-factor 1.2)
+(setq image-scaling-factor 1.5)
+;; (setq right-margin-width)
 
 (when (not (featurep! :ui modeline))
   (defmacro j0ni/diminish (feature mode &optional to-what)
@@ -748,4 +753,5 @@ frames with exactly two windows."
 
   ;; Set up compose mode
   (add-hook 'message-mode-hook #'visual-line-mode)
+  (add-hook 'message-mode-hook #'auto-fill-mode)
   (add-hook 'message-mode-hook #'mml-secure-message-sign-pgpmime))
