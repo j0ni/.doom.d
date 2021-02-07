@@ -412,7 +412,11 @@ frames with exactly two windows."
 (use-package! ctrlf
   :init (ctrlf-mode 1))
 
-(setq +format-on-save-enabled-modes '(python-mode rustic-mode))
+;; (setq +format-on-save-enabled-modes '(rustic-mode python-mode))
+(add-hook 'rustic-mode-hook #'format-all-mode)
+(add-hook 'python-mode-hook #'format-all-mode)
+
+(setq rustic-indent-method-chain t)
 
 (after! lsp
   (setq lsp-rust-analyzer-proc-macro-enable t)
@@ -476,6 +480,11 @@ frames with exactly two windows."
   (flycheck-indication-mode 'right-fringe)
   (flycheck-help-echo-function nil)
   (flycheck-check-syntax-automatically '(save idle-change mode-enabled)))
+
+(use-package! flycheck-posframe
+  :custom
+  (flycheck-posframe-border-width 1)
+  (flycheck-posframe-position 'window-bottom-right-corner))
 
 (after! flycheck
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
