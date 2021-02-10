@@ -61,13 +61,13 @@
   :init
   (modus-themes-load-themes)
   :custom
-  (modus-themes-bold-constructs t)
-  (modus-themes-syntax nil)
-  (modus-themes-fringes nil)
+  (modus-themes-bold-constructs nil)
+  (modus-themes-syntax 'faint)
+  (modus-themes-fringes 'subtle)
   (modus-themes-scale-headings t)
-  (modus-themes-completions nil)
-  ;; (modus-themes-mode-line nil)
+  (modus-themes-completions 'opinionated)
   (modus-themes-mode-line '3d)
+  (modus-themes-paren-match 'intense-bold)
   :config
   (custom-theme-set-faces! '(modus-operandi modus-vivendi)
     '(bold :weight semibold)))
@@ -88,6 +88,16 @@
 (setq-default truncate-lines nil)
 (setq-default word-wrap nil)
 
+(defun j0ni/toggle-visual-line-mode ()
+  (interactive)
+  (if visual-line-mode
+      (visual-line-mode -1)
+    (visual-line-mode 1)))
+
+(map! (:leader
+       (:prefix "t"
+        :desc "Toggle visual-line-mode" :n "v" #'j0ni/toggle-visual-line-mode)))
+
 (after! telega
   ;; (telega-mode-line-mode +1)
   (telega-notifications-mode 1)
@@ -107,13 +117,12 @@
 (cond
  (IS-LINUX
   (progn
-    (setq doom-font (font-spec :family "PragmataPro Mono Liga" :size 36 :weight 'light)
+    (setq doom-font (font-spec :family "PragmataPro Liga" :size 36 :weight 'light)
           ;; doom-font (font-spec :family "Iosevka Snuggle" :size 40 :weight 'light)
           doom-unicode-font (font-spec :family "Symbola")
           doom-variable-pitch-font (font-spec :family "sans" :size 36))
     (setq doom-theme 'modus-vivendi)
-    ;; (setq doom-theme 'minimal)
-    (setq doom-theme 'almost-mono-black)
+    ;; (setq doom-theme 'almost-mono-black)
     (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
     ;; (setq fancy-splash-image nil)
     (setq x-super-keysym 'meta)))
@@ -193,7 +202,7 @@
 (setq doom-modeline-persp-name t)
 (setq doom-modeline-irc t)
 
-(setq image-scaling-factor 1.5)
+(setq image-scaling-factor 1.6)
 ;; (setq right-margin-width)
 
 (when (not (featurep! :ui modeline))
@@ -523,6 +532,10 @@ frames with exactly two windows."
 
 ;; Some org-mode setup
 
+;; (add-to-list '+ligatures-in-modes 'org-mode t)
+(setq +ligatures-in-modes '(prog-mode))
+(remove-hook 'org-mode-hook #'org-superstar-mode)
+
 (after! org
   ;; make it short to start with
   (setq org-startup-folded t)
@@ -547,7 +560,7 @@ frames with exactly two windows."
   (setq org-special-ctrl-k t)
 
   ;; extra indentation
-  (setq org-adapt-indentation t)
+  ;; (setq org-adapt-indentation t)
 
   ;; let's have pretty source code blocks
   (setq org-edit-src-content-indentation 0
