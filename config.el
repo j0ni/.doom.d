@@ -62,6 +62,7 @@
   (modus-themes-load-themes)
   :custom
   (modus-themes-bold-constructs nil)
+  (modus-themes-slanted-constructs t)
   (modus-themes-syntax 'faint)
   (modus-themes-fringes 'subtle)
   (modus-themes-scale-headings t)
