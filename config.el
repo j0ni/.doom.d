@@ -202,7 +202,7 @@
 (setq doom-modeline-persp-name t)
 (setq doom-modeline-irc t)
 
-(setq image-scaling-factor 1.6)
+(setq image-scaling-factor 1.1)
 ;; (setq right-margin-width)
 
 (when (not (featurep! :ui modeline))
@@ -244,9 +244,6 @@
 
 ")
 (setq company-idle-delay 0.9)
-
-(setq lsp-ui-sideline-enable nil)
-(setq lsp-enable-symbol-highlighting nil)
 
 ;; whitespace
 (setq whitespace-line-column 100)
@@ -422,14 +419,28 @@ frames with exactly two windows."
   :init (ctrlf-mode 1))
 
 ;; (setq +format-on-save-enabled-modes '(rustic-mode python-mode))
+;; do this instead
 (add-hook 'rustic-mode-hook #'format-all-mode)
 (add-hook 'python-mode-hook #'format-all-mode)
 
-(setq rustic-indent-method-chain t)
+(use-package! rustic
+  :custom
+  (rustic-format-trigger 'on-save)
+  (rustic-lsp-server 'rust-analyzer)
+  (rustic-lsp-format t)
+  (rustic-indent-method-chain nil))
 
-(after! lsp
-  (setq lsp-rust-analyzer-proc-macro-enable t)
-  (setq lsp-rust-analyzer-cargo-load-out-dirs-from-check t))
+(setq indent-tabs-mode nil)
+
+(use-package! lsp
+  :custom
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-rust-server 'rust-analyzer)
+  (lsp-eldoc-render-all t)
+  (lsp-ui-sideline-enable nil)
+  (lsp-enable-symbol-highlighting t)
+  (lsp-rust-analyzer-proc-macro-enable t)
+  (lsp-rust-analyzer-cargo-load-out-dirs-from-check t))
 
 (defvar my-lisp-modes
   '(emacs-lisp-mode
@@ -492,7 +503,7 @@ frames with exactly two windows."
 
 (use-package! flycheck-posframe
   :custom
-  (flycheck-posframe-border-width 1)
+  (flycheck-posframe-border-width 0)
   (flycheck-posframe-position 'window-bottom-right-corner))
 
 (after! flycheck

@@ -9,6 +9,8 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
+(package! flycheck)
+(package! flycheck-posframe :disable t)
 (package! diminish)
 (package! solaire-mode :disable t)
 ;;(package! git-gutter :disable t)
