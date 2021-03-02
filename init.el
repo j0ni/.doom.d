@@ -63,7 +63,7 @@
        ;;parinfer          ; turn lisp into python, sort of
        ;;rotate-text       ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
-       word-wrap         ; soft wrapping with language-aware indent
+       ;; word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
        dired             ; making dired pretty [functional]
@@ -112,7 +112,7 @@
        :lang
        ;;agda              ; types of types of types of types...
        cc                  ; C/C++/Obj-C madness
-       (clojure +lsp)             ; java with a lisp
+       (clojure +lsp)      ; java with a lisp
        common-lisp         ; if you've seen one lisp, you've seen them all
        ;;coq                 ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
@@ -146,7 +146,7 @@
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org +roam)               ; organize your plain life in plain text
+       (org +roam +jupyter)  ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        (purescript +lsp)        ; javascript, but functional
@@ -176,7 +176,7 @@
        :app
        calendar
        irc               ; how neckbeards socialize
-       ;;(rss +org)        ; emacs as an RSS reader
+       (rss +org)        ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config

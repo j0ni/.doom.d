@@ -13,8 +13,8 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(load! "draculapro-theme.el")
-(load! "doom-draculapro-theme.el")
+;; (load! "draculapro-theme.el")
+;; (load! "doom-draculapro-theme.el")
 ;;(setq doom-draculapro-brighter-modeline t)
 ;;(setq doom-theme 'doom-draculapro)
 
@@ -35,6 +35,13 @@
   (ibuffer-default-shrink-to-minimum-size nil)
   (ibuffer-saved-filter-groups nil)
   (ibuffer-old-time 48))
+
+(use-package! diff-hl
+  :config
+  ;; doom already includes diff-hl, but it switches it on in the margin rather
+  ;; than fringe - so first switch it off
+  (diff-hl-margin-mode -1)
+  :hook ((after-init . global-diff-hl-mode)))
 
 (use-package! ibuffer-vc
   :hook ((ibuffer . j0ni/ibuffer-vc-hook))
@@ -64,10 +71,10 @@
   (modus-themes-bold-constructs nil)
   (modus-themes-slanted-constructs t)
   (modus-themes-syntax 'faint)
-  (modus-themes-fringes 'subtle)
+  (modus-themes-fringes nil)
   (modus-themes-scale-headings t)
   (modus-themes-completions 'opinionated)
-  (modus-themes-mode-line '3d)
+  (modus-themes-mode-line nil)
   (modus-themes-paren-match 'intense-bold)
   :config
   (custom-theme-set-faces! '(modus-operandi modus-vivendi)
@@ -121,17 +128,17 @@
     (setq doom-font (font-spec :family "PragmataPro Liga" :size 36 :weight 'light)
           ;; doom-font (font-spec :family "Iosevka Snuggle" :size 40 :weight 'light)
           doom-unicode-font (font-spec :family "Symbola")
-          doom-variable-pitch-font (font-spec :family "sans" :size 36))
-    (setq doom-theme 'modus-vivendi)
-    ;; (setq doom-theme 'almost-mono-black)
+          doom-variable-pitch-font (font-spec :family "sans" :size 40))
+    ;; (setq doom-theme 'modus-vivendi)
+    (setq doom-theme 'almost-mono-black)
     (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
     ;; (setq fancy-splash-image nil)
     (setq x-super-keysym 'meta)))
  (IS-MAC
   (progn
-    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 17 :weight 'light)
+    (setq doom-font (font-spec :family "Iosevka Snuggle" :size 18 :weight 'light)
           line-spacing 0
-          doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 13)
+          doom-variable-pitch-font (font-spec :family "Lucida Grande" :size 18)
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
     (setq doom-theme 'modus-vivendi)
@@ -139,18 +146,6 @@
     )))
 
 (custom-set-faces! '(bold :weight semibold))
-
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (company-mode +1))
-
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-(add-hook 'before-save-hook #'tide-format-before-save)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -169,7 +164,7 @@
 (setq display-line-numbers-type nil)
 
 ;; Flycheck is mostly annoying, but only intolerable in Clojure.
-;; (setq-default flycheck-disabled-checkers '(clojure))
+(setq-default flycheck-disabled-checkers '(clojure))
 ;; (setq-default flycheck-disabled-checkers nil)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
@@ -192,7 +187,7 @@
 ;; (setq doom-modeline-bar-width 3)
 
 ;; (setq doom-modeline-icon (display-graphic-p))
-(setq doom-modeline-icon nil)
+(setq doom-modeline-icon t)
 ;; (setq doom-modeline-modal-icon nil)
 ;; (setq doom-modeline-major-mode-icon nil)
 ;; (setq doom-modeline-major-mode-color-icon nil)
@@ -203,7 +198,7 @@
 (setq doom-modeline-persp-name t)
 (setq doom-modeline-irc t)
 
-(setq image-scaling-factor 1.1)
+(setq image-scaling-factor 1.5)
 ;; (setq right-margin-width)
 
 (when (not (featurep! :ui modeline))
@@ -244,7 +239,7 @@
 ;; To create a file, visit it with \\[find-file] and enter text in its buffer.
 
 ")
-(setq company-idle-delay 0.9)
+(setq company-idle-delay 0.8)
 
 ;; whitespace
 (setq whitespace-line-column 100)
@@ -426,7 +421,7 @@ frames with exactly two windows."
 
 (use-package! rustic
   :custom
-  (rustic-format-trigger 'on-save)
+  ;; (rustic-format-trigger 'on-save)
   (rustic-lsp-server 'rust-analyzer)
   (rustic-lsp-format t)
   (rustic-indent-method-chain nil))
@@ -435,13 +430,38 @@ frames with exactly two windows."
 
 (use-package! lsp
   :custom
+  (lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
   (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-rust-server 'rust-analyzer)
-  (lsp-eldoc-render-all t)
-  (lsp-ui-sideline-enable nil)
-  (lsp-enable-symbol-highlighting t)
   (lsp-rust-analyzer-proc-macro-enable t)
-  (lsp-rust-analyzer-cargo-load-out-dirs-from-check t))
+  ;; (lsp-enable-symbol-highlighting t)
+  (lsp-enable-completion-at-point t)
+  ;; (lsp-signature-auto-activate nil)
+  (lsp-file-watch-threshold 10000)
+  (lsp-rust-server 'rust-analyzer)
+  (lsp-completion-provider :capf)
+  (lsp-ui-sideline-enable nil)
+  (lsp-eldoc-enable-hover nil)
+  (lsp-signature-render-all t)
+  (lsp-enable-indentation t)
+  (lsp-auto-guess-root nil)
+  (lsp-enable-snippet nil)
+  (lsp-eldoc-render-all t)
+  (lsp-auto-configure t)
+  (lsp-idle-delay 0.8)
+  (lsp-enable-xref t))
+
+(use-package! lsp-ui
+  :config
+  (require 'lsp-ui-imenu)
+  :custom
+  (lsp-ui-autoconfigure t)
+  (lsp-ui-sideline-enable t)
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-peek-enable t)
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-imenu-autorefresh t)
+  (lsp-ui-doc-show-with-cursor t)
+  (lsp-ui-doc-show-with-mouse nil))
 
 (defvar my-lisp-modes
   '(emacs-lisp-mode
@@ -465,10 +485,6 @@ frames with exactly two windows."
 (after! highlight-sexp
   (setq hl-sexp-background-color "#201020"))
 
-;; doom already includes diff-hl, but it switches it on in the margin rather
-;; than fringe - so first switch it off
-(diff-hl-margin-mode -1)
-
 (use-package! highlight-symbol
   :hook ((prog-mode . highlight-symbol-mode)
          (dired-mode . highlight-symbol-mode)))
@@ -484,10 +500,6 @@ frames with exactly two windows."
   (add-to-list 'ahs-modes 'clojure-mode)
   (add-to-list 'ahs-modes 'fennel-mode)
   (add-to-list 'ahs-modes 'typescript-mode))
-
-(after! (:and magit diff-hl)
-  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
 (add-hook 'haskell-mode-hook #'haskell-indent-mode)
 (setq haskell-indentation-electric-flag t)
@@ -514,11 +526,59 @@ frames with exactly two windows."
 (after! git-gutter-fringe
   (setq-default fringes-outside-margins t))
 
+(after! elfeed
+  (setq elfeed-feeds '("https://pluralistic.net/feed/")))
+
 (after! ivy
   ;; I prefer search matching to be ordered; it's more precise
   ;;(add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus))
   (setq ivy-extra-directories nil)
   (setq ivy-use-virtual-buffers t))
+
+;; (use-package! ivy-rich
+;;   :hook ((after-init-hook . ivy-rich-mode))
+;;   :custom
+;;   (ivy-rich-display-transformers-list
+;;    '(ivy-switch-buffer
+;;      (:columns
+;;       ((ivy-rich-candidate (:width 60))
+;;        (ivy-rich-switch-buffer-size (:width 7))
+;;        (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+;;        (ivy-rich-switch-buffer-major-mode (:width 30 :face warning))
+;;        (ivy-rich-switch-buffer-project (:width 20 :face success))
+;;        (ivy-rich-switch-buffer-path
+;;         (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path
+;;                              x (ivy-rich-minibuffer-width 0.4))))))
+;;       :predicate
+;;       (lambda (cand) (get-buffer cand)))
+;;      counsel-find-file
+;;      (:columns
+;;       ((ivy-read-file-transformer)
+;;        (ivy-rich-counsel-find-file-truename (:face font-lock-doc-face))))
+;;      counsel-M-x
+;;      (:columns
+;;       ((counsel-M-x-transformer (:width 60))
+;;        (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+;;      counsel-describe-function
+;;      (:columns
+;;       ((counsel-describe-function-transformer (:width 60))
+;;        (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+;;      counsel-describe-variable
+;;      (:columns
+;;       ((counsel-describe-variable-transformer (:width 60))
+;;        (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
+;;      counsel-recentf
+;;      (:columns
+;;       ((ivy-rich-candidate (:width 0.8))
+;;        (ivy-rich-file-last-modified-time (:face font-lock-comment-face))))
+;;      package-install
+;;      (:columns
+;;       ((ivy-rich-candidate (:width 60))
+;;        (ivy-rich-package-version (:width 16 :face font-lock-comment-face))
+;;        (ivy-rich-package-archive-summary (:width 7 :face font-lock-builtin-face))
+;;        (ivy-rich-package-install-summary (:face font-lock-doc-face))))))
+;;   :config
+;;   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
 
 (add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode))
 
@@ -591,6 +651,8 @@ frames with exactly two windows."
         `(("j" "Journal" entry (file+olp+datetree ,(concat org-directory "/journal.org"))
            "* %T\n  %?\n\n%a")
           ("s" "Shriek" entry (file+headline ,(concat org-directory "/shrieks.org") "Shrieks")
+           "* %T\n%?\n")
+          ("n" "Bean" entry (file+olp+datetree ,(concat org-directory "/beans.org") "Beans")
            "* %T\n%?\n")
           ("t" "Task" entry (file+headline ,(concat org-directory "/berlin.org") "Inbox")
            "* TODO %?\n  %a\n%i")
