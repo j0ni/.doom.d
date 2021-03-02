@@ -152,9 +152,12 @@
 (setq org-directory "~/Dropbox/OrgMode")
 
 (setq org-roam-directory (concat org-directory "/org-roam"))
+(setq org-roam-dailies-directory "daily/")
 (setq org-roam-capture-templates
-      `(("d" "default" plain (function org-roam--capture-get-point)
-         "%?"
+      `(("d" "default" entry #'org-roam-capture--get-point "* %?"
+         :file-name "daily/%<%Y-%m-%d>"
+         :head "#+title: %<%Y-%m-%d>\n\n")
+        ("n" "default" plain #'org-roam--capture-get-point "%?"
          :file-name "%<%Y%m%d%H%M%S>-${slug}"
          :head "#+title: ${title}\n"
          :unnarrowed t)))
@@ -838,6 +841,6 @@ frames with exactly two windows."
                        (smtpmail-stream-type . starttls)))))
 
   ;; Set up compose mode
-  (add-hook 'message-mode-hook #'visual-line-mode)
+  ;; (add-hook 'message-mode-hook #'visual-line-mode)
   (add-hook 'message-mode-hook #'auto-fill-mode)
   (add-hook 'message-mode-hook #'mml-secure-message-sign-pgpmime))
