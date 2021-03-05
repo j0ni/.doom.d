@@ -433,24 +433,23 @@ frames with exactly two windows."
 
 (use-package! lsp
   :custom
+  ;; rust customizations
   (lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-rust-analyzer-proc-macro-enable t)
-  ;; (lsp-enable-symbol-highlighting t)
-  (lsp-enable-completion-at-point t)
-  ;; (lsp-signature-auto-activate nil)
-  (lsp-file-watch-threshold 10000)
   (lsp-rust-server 'rust-analyzer)
   (lsp-completion-provider :capf)
-  (lsp-ui-sideline-enable nil)
-  (lsp-eldoc-enable-hover nil)
-  (lsp-signature-render-all t)
+  ;; tweaks and matters of concern
+  (lsp-enable-symbol-highlighting t)
+  (lsp-enable-completion-at-point t)
+  (lsp-file-watch-threshold 10000)
+  (lsp-eldoc-enable-hover t)
+  (lsp-eldoc-render-all nil)
   (lsp-enable-indentation t)
-  (lsp-auto-guess-root nil)
+  (lsp-auto-guess-root t)
   (lsp-enable-snippet nil)
-  (lsp-eldoc-render-all t)
   (lsp-auto-configure t)
-  (lsp-idle-delay 0.8)
+  (lsp-lens-enable t)
   (lsp-enable-xref t))
 
 (use-package! lsp-ui
@@ -458,13 +457,24 @@ frames with exactly two windows."
   (require 'lsp-ui-imenu)
   :custom
   (lsp-ui-autoconfigure t)
+  ;; sideline
+  (lsp-ui-sideline-show-code-actions nil)
+  (lsp-ui-sideline-show-diagnostics t)
   (lsp-ui-sideline-enable t)
-  (lsp-ui-doc-enable nil)
-  (lsp-ui-peek-enable t)
-  (lsp-ui-peek-always-show t)
-  (lsp-ui-imenu-autorefresh t)
+  ;; docs
+  (lsp-ui-doc-enable t)
+  (lsp-ui-doc-position 'top)
+  (lsp-ui-doc-alignment 'frame)
   (lsp-ui-doc-show-with-cursor t)
-  (lsp-ui-doc-show-with-mouse nil))
+  (lsp-ui-doc-show-with-mouse nil)
+  (lsp-ui-doc-include-signature t)
+  ;; peek
+  (lsp-ui-peek-enable t)
+  (lsp-ui-peek-show-directory t)
+  (lsp-ui-peek-always-show nil)
+  ;; imenu
+  (lsp-ui-imenu-enable t)
+  (lsp-ui-imenu-auto-refresh t))
 
 (defvar my-lisp-modes
   '(emacs-lisp-mode
@@ -481,9 +491,12 @@ frames with exactly two windows."
     (add-hook (intern (concat (symbol-name mode) "-hook")) func)))
 
 (use-package! paredit
+  :commands (enable-paredit-mode)
   :init
-  (add-hooks my-lisp-modes #'enable-paredit-mode)
-  (add-hook! paredit :after #'evil-paredit-mode))
+  (add-hooks my-lisp-modes #'enable-paredit-mode))
+
+(use-package! evil-paredit
+  :hook ((paredit-mode . evil-paredit-mode)))
 
 (after! highlight-sexp
   (setq hl-sexp-background-color "#201020"))
@@ -508,6 +521,10 @@ frames with exactly two windows."
 (setq haskell-indentation-electric-flag t)
 
 (tooltip-mode -1)
+
+(use-package! typescript-mode
+  :custom
+  (typescript-indent-level 2))
 
 (use-package! flycheck
   :config
@@ -698,6 +715,10 @@ frames with exactly two windows."
   (setq org-roam-completion-system 'ivy)
   (setq org-roam-buffer-position 'bottom))
 
+(map! (:leader
+       (:prefix "n"
+        :desc "Open org-roam daily for today" :n "d" #'org-roam-dailies-capture-today)))
+
 (if IS-MAC
     (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e"))
@@ -735,6 +756,7 @@ frames with exactly two windows."
                               (:thread-subject))
         mu4e-compose-complete-only-after "2012-01-01"
         mu4e-view-show-addresses t
+        mu4e-compose-complete-addresses t
         mm-inline-large-images 'resize
 
         message-send-mail-function 'smtpmail-send-it
