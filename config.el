@@ -150,14 +150,13 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/OrgMode")
-
-(setq org-roam-directory (concat org-directory "/org-roam"))
+(setq org-roam-directory (expand-file-name "org-roam" org-directory))
 (setq org-roam-dailies-directory "daily/")
 (setq org-roam-capture-templates
-      `(("d" "default" entry #'org-roam-capture--get-point "* %?"
+      `(("d" "daily" entry #'org-roam-capture--get-point "* %?"
          :file-name "daily/%<%Y-%m-%d>"
          :head "#+title: %<%Y-%m-%d>\n\n")
-        ("n" "default" plain #'org-roam--capture-get-point "%?"
+        ("n" "regular note" plain #'org-roam--capture-get-point "%?"
          :file-name "%<%Y%m%d%H%M%S>-${slug}"
          :head "#+title: ${title}\n"
          :unnarrowed t)))
