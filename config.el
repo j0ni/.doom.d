@@ -68,9 +68,9 @@
   :init
   (modus-themes-load-themes)
   :custom
-  (modus-themes-bold-constructs nil)
+  (modus-themes-bold-constructs t)
   (modus-themes-slanted-constructs t)
-  (modus-themes-syntax 'faint)
+  (modus-themes-syntax 'faint-yellow-comments)
   (modus-themes-fringes nil)
   (modus-themes-scale-headings t)
   (modus-themes-completions 'opinionated)
