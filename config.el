@@ -107,8 +107,8 @@
         :desc "Toggle visual-line-mode" :n "v" #'j0ni/toggle-visual-line-mode)))
 
 (after! telega
-  ;; (telega-mode-line-mode +1)
-  (telega-notifications-mode 1)
+  (telega-mode-line-mode +1)
+  (telega-notifications-mode +1)
   (evil-set-initial-state 'telega-chat-mode 'emacs))
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -145,7 +145,7 @@
     (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
     )))
 
-(custom-set-faces! '(bold :weight semibold))
+;; (custom-set-faces! '(bold :weight bold))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -405,13 +405,9 @@ frames with exactly two windows."
 
 (after! circe
   (set-irc-server! "freenode"
-                   `(:host "localhost"
-                     :tls nil
-                     :port 6777))
-  (set-irc-server! "oftc"
-                   `(:host "localhost"
-                     :tls nil
-                     :port 6778)))
+                   `(:host "irc.freenode.net"
+                     :tls t
+                     :port 6697)))
 
 (use-package! ctrlf
   :init (ctrlf-mode 1))
@@ -699,7 +695,9 @@ frames with exactly two windows."
   ;; set agenda file(s)
   (setq org-agenda-files (list (concat org-directory "/journal.org")
                                (concat org-directory "/berlin.org")
-                               (concat org-directory "/shrieks.org")))
+                               (concat org-directory "/shrieks.org")
+                               (concat org-directory "/org-roam/")
+                               (concat org-directory "/org-roam/daily/")))
   (setq org-agenda-span 14))
 
 (use-package! org-super-agenda

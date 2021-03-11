@@ -25,7 +25,7 @@
 (package! tide :disable t)
 (package! fennel-mode :recipe (:host gitlab :repo "technomancy/fennel-mode"))
 (package! auto-highlight-symbol :disable t)
-(package! highlight-symbol)
+(package! highlight-symbol :disable t)
 (package! org-msg :disable t)
 (package! inf-clojure :disable t)
 (package! olivetti)
@@ -48,6 +48,8 @@
 (package! almost-mono-themes)
 (package! flycheck-popup-tip :disable t)
 (package! tao-theme :disable t)
+(package! wolfram)
+(package! cyberpunk-theme)
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
