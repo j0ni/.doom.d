@@ -9,6 +9,7 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
+(package! lsp-ui :disable t)
 (package! flycheck)
 (package! flycheck-posframe :disable t)
 (package! diminish :disable t)
@@ -20,6 +21,7 @@
 (package! indent-guide :disable t)
 (package! nyan-mode :disable t)
 (package! modus-themes)
+(package! cyberpunk-theme)
 (package! leuven-theme :disable t)
 (package! color-theme-sanityinc-tomorrow :disable t)
 (package! tide :disable t)

@@ -547,14 +547,25 @@ frames with exactly two windows."
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
       [16 48 112 240 112 48 16] nil nil 'center))
 
-(after! git-gutter-fringe
-  (setq-default fringes-outside-margins t))
+(setq +vc-gutter-default-style nil)
+(after! git-gutter
+  (setq-default fringes-outside-margins t)
+  ;; thin fringe bitmaps
+  ;; (define-fringe-bitmap 'git-gutter-fr:added [224]
+  ;;   nil nil '(center repeated))
+  ;; (define-fringe-bitmap 'git-gutter-fr:modified [224]
+  ;;   nil nil '(center repeated))
+  ;; (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
+  ;;   nil nil 'bottom)
+  ;; (setq git-gutter:modified-sign " ")
+  ;; (setq git-gutter:added-sign " ")
+  ;; (setq git-gutter:deleted-sign " ")
+  )
 
 (after! elfeed
   (setq elfeed-feeds '("https://pluralistic.net/feed/")))
 
 (after! ivy
-  ;; I prefer search matching to be ordered; it's more precise
   ;;(add-to-list 'ivy-re-builders-alist '(counsel-projectile-find-file . ivy--regex-plus))
   (setq ivy-extra-directories nil)
   (setq ivy-use-virtual-buffers t))
