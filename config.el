@@ -169,6 +169,9 @@
 (setq-default flycheck-disabled-checkers '(clojure))
 ;; (setq-default flycheck-disabled-checkers nil)
 
+;; This is a little too vague for me, not seeing the throbber
+(plist-put +popup-defaults :modeline t)
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
