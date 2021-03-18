@@ -425,11 +425,12 @@ frames with exactly two windows."
   ;; (rustic-format-trigger 'on-save)
   (rustic-lsp-server 'rust-analyzer)
   (rustic-lsp-format t)
+  ;; (rustic-lsp-client 'eglot)
   (rustic-indent-method-chain nil))
 
 (setq indent-tabs-mode nil)
 
-(use-package! lsp
+(use-package! lsp-mode
   :custom
   ;; rust customizations
   (lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
@@ -495,6 +496,11 @@ frames with exactly two windows."
 
 (use-package! evil-paredit
   :hook ((paredit-mode . evil-paredit-mode)))
+
+(after! (:and clojure-mode lsp-mode)
+  (defun j0ni/clojure-mode-hook ()
+    (setq lsp-enable-indentation nil))
+  (add-hook 'clojure-mode-hook #'j0ni/clojure-mode-hook))
 
 (after! highlight-sexp
   (setq hl-sexp-background-color "#201020"))
