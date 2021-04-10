@@ -125,24 +125,24 @@
        ;;erlang            ; an elegant language for a more civilized age
        ;;ess               ; emacs speaks statistics
        ;;faust             ; dsp, but you get to keep your soul
-       ;;fsharp            ; ML stands for Microsoft's Language
+       (fsharp +lsp)       ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
        ;;(go +lsp)         ; the hipster dialect
-       (haskell +dante)  ; a language that's lazier than I am
+       (haskell +dante)    ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
-       idris             ;
-       json              ; At least it ain't XML
-       (java +meghanada) ; the poster child for carpal tunnel syndrome
-       (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
+       idris               ;
+       json                ; At least it ain't XML
+       (java +meghanada)   ; the poster child for carpal tunnel syndrome
+       (javascript +lsp)   ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
        ;;lean
        ;;factor
        ;;ledger            ; an accounting system in Emacs
-       lua               ; one-based indices? one-based indices
-       markdown          ; writing docs for people to ignore
+       lua                 ; one-based indices? one-based indices
+       markdown            ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel

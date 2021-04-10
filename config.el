@@ -70,7 +70,8 @@
   :custom
   (modus-themes-bold-constructs t)
   (modus-themes-slanted-constructs t)
-  (modus-themes-syntax 'faint-yellow-comments)
+  ;; (modus-themes-syntax 'faint-yellow-comments)
+  (modus-themes-syntax nil)
   (modus-themes-fringes nil)
   (modus-themes-scale-headings t)
   (modus-themes-completions 'opinionated)
@@ -111,6 +112,10 @@
   (telega-notifications-mode +1)
   (evil-set-initial-state 'telega-chat-mode 'emacs))
 
+(use-package! wolfram
+  :custom
+  (wolfram-alpha-app-id "Q4EE7L-PLWVXJWUVT"))
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
@@ -125,14 +130,17 @@
 (cond
  (IS-LINUX
   (progn
-    (setq doom-font (font-spec :family "PragmataPro Liga" :size 36 :weight 'light)
+    (setq ;; doom-font (font-spec :family "PragmataPro Liga" :size 36 :weight 'light)
+          doom-font (font-spec :family "Monoid" :size 18)
           ;; doom-font (font-spec :family "Iosevka Snuggle" :size 40 :weight 'light)
           doom-unicode-font (font-spec :family "Symbola")
-          doom-variable-pitch-font (font-spec :family "sans" :size 40))
-    ;; (setq doom-theme 'modus-vivendi)
-    (setq doom-theme 'almost-mono-black)
-    (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
-    ;; (setq fancy-splash-image nil)
+          doom-variable-pitch-font (font-spec :family "sans" :size 20))
+    (setq doom-theme 'modus-vivendi)
+    ;; (setq doom-theme 'almost-mono-black)
+    ;; (setq doom-theme 'almost-mono-gray)
+    ;; (setq doom-theme 'cyberpunk)
+    ;; (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
+    (setq fancy-splash-image nil)
     (setq x-super-keysym 'meta)))
  (IS-MAC
   (progn
@@ -142,8 +150,7 @@
           ns-right-option-modifier 'meta
           mac-command-modifier 'meta)
     (setq doom-theme 'modus-vivendi)
-    (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png")
-    )))
+    (setq fancy-splash-image "~/Dropbox/Home/Pictures/cccp.png"))))
 
 ;; (custom-set-faces! '(bold :weight bold))
 
@@ -192,7 +199,7 @@
 ;; (setq doom-modeline-bar-width 3)
 
 ;; (setq doom-modeline-icon (display-graphic-p))
-(setq doom-modeline-icon t)
+(setq doom-modeline-icon nil)
 ;; (setq doom-modeline-modal-icon nil)
 ;; (setq doom-modeline-major-mode-icon nil)
 ;; (setq doom-modeline-major-mode-color-icon nil)
@@ -240,8 +247,7 @@
 
 (setq initial-major-mode 'lisp-interaction-mode)
 (setq initial-scratch-message "\
-;; This buffer is for text that is not saved, and for Lisp evaluation.
-;; To create a file, visit it with \\[find-file] and enter text in its buffer.
+;; Well I guess you can write anything here huh? Do some lisp here. If you want.
 
 ")
 (setq company-idle-delay 0.8)
@@ -275,7 +281,7 @@
 (setq +vc-gutter-default-style nil)
 
 ;; (fringe-mode nil)
-;; (setq-default fring-mode nil)
+;; (setq-default fringe-mode nil)
 ;; Shamelessly lifted from @zarkone's config, and tweaked
 (defun j0ni/delete-whitespace (&optional backward-only)
   "Replaces all spaces, tabs and newlinesaround point with a single space.
@@ -695,7 +701,7 @@ frames with exactly two windows."
            "* %T\n** Systolic: %^{systolic}\n** Diastolic: %^{diastolic}\n** Pulse: %^{pulse}\n** Notes\n%?\n")))
 
   (dolist (tag '(home xapix sanity rachel lauren alice grace family self))
-    (add-to-list 'org-tag-persistent-alist tag)))
+    (add-to-list 'org-tag-persistent-alist `(,tag))))
 
 (after! evil-org
   (remove-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h))
@@ -736,6 +742,15 @@ frames with exactly two windows."
        (:prefix "n"
         :desc "Open org-roam daily for today" :n "d" #'org-roam-dailies-capture-today)))
 
+;; "borrowed" from Anatoly
+(defun j0ni/vertical-three-windows-layout ()
+  "Vertical, three window layout"
+  (interactive)
+  (delete-other-windows)
+  (split-window-horizontally)
+  (split-window-horizontally)
+  (balance-windows))
+
 (if IS-MAC
     (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e"))
@@ -748,7 +763,8 @@ frames with exactly two windows."
   (setq mu4e-root-maildir "~/Maildir")
 
   (defun j0ni/mu4e-bookmark (sub-maildir days char)
-    (list (concat "date:" days "d..now AND (maildir:/" sub-maildir "/INBOX OR maildir:/" sub-maildir "/sent-mail) AND NOT flag:trashed")
+    (list (concat "date:" days "d..now AND (maildir:/" sub-maildir "/INBOX OR maildir:/"
+                  sub-maildir "/sent-mail) AND NOT flag:trashed")
           (concat "Last " days " days (" sub-maildir ")")
           char))
 
